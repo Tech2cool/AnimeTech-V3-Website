@@ -1,0 +1,33 @@
+
+.list-view-container{
+    margin: 0 20px;
+
+}
+
+.lv-title-see-more{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.lv-cards{
+    display: flex;
+    justify-content: space-between;
+    column-gap: 30px;
+    row-gap: 30px;
+    flex-wrap: wrap;
+}
+.lv-title{
+    font-weight: 600;
+    font-size: 20px;
+}
+.lv-view-more{
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    /* padding: 2px; */
+    cursor: pointer;
+
+}

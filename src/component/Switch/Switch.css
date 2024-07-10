@@ -1,0 +1,20 @@
+
+.switch-container{
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.switch-btn{
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: var(--clr-bg-2);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font-inter);
+    cursor: pointer;
+
+}
+.switch-active{
+    background-color: var(--clr-accent);
+}
