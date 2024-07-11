@@ -1,4 +1,4 @@
-export const SERVER_BASE_URL = 'https://ani-short.vercel.app';
+export const SERVER_BASE_URL = import.meta.env.DEV ? 'http://localhost:8080': 'https://ani-short.vercel.app';
 
 export const qualityPrefs = {
     _default: 'default',
@@ -263,6 +263,8 @@ export interface Item {
     animeImg: string;
     aniwatchId: string;
     averageScore: number;
+    otherNames?:string[];
+    otherName?:string;
     bannerImage: {
         provider: string;
         url: string;
@@ -274,6 +276,7 @@ export interface Item {
         medium: string;
     }[];
     description: string;
+    synopsis?:string;
     episodeId: string;
     type: string;
     totalEpisodes: number;
@@ -293,7 +296,7 @@ export interface Item {
         japanese: string;
         gogo_title: string;
     };
-
+    isDub:boolean,
     episodeNum: string;
 }
 

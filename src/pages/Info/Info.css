@@ -1,0 +1,214 @@
+.info-container{
+    margin-top: 80px;
+}
+.info-top-section{
+    display: flex;
+    background-color: var(--clr-bg-2);
+    padding: 0px 10px;
+    
+}
+.info-top-left{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex: 4;
+    padding: 30px 10px;
+
+}
+.info-poster{
+    width: 100%;
+    height: 100%;
+}
+.info-poster img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+}
+.info-name{
+    font-size: 30px;
+    font-family: var(--font-roboto);
+    font-weight: 600;  
+    padding: 0 10px; 
+}
+.info-tags-container{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.info-card-tag{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.info-desc{
+    padding: 10px 10px;
+}
+.info-desc p{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    font-size: 14px;
+    font-family: var(--font-inter);
+    line-height: 20px;
+    color: var(--clr-text);
+    font-weight: 400;
+
+}
+.info-desc .show-desc{
+    display: flex;
+}
+.desc-btn{
+    padding: 4px 0;
+    /* margin: 10px 0; */
+    color: var(--clr-accent) !important;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 16px;
+}
+.info-location ol{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+    font-size: 14px;
+    padding: 15px 10px;
+    font-weight: 500;
+    color: var(--clr-text);
+}
+.info-location ol li{
+    list-style: disc;
+}
+.info-loc-title{
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.711);
+}
+.info-top-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding: 10px;
+    margin-right: 50px;
+    gap: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.info-other-name{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 14px;
+}
+.info-other-heading{
+    font-weight: 600;
+    font-size: 15px;
+}
+.info-other-text{
+    font-weight: 400;
+    opacity: 0.9;
+    font-family: var(--font-inter);
+}
+.info-disable{
+    display: none;
+}
+.info-left-right-section{
+    display: flex;
+    padding: 10px;
+}
+.info-episode-section{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    flex-direction: 1;
+    width: 85%;
+}
+.info-episode-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 10px;
+    border: 1px solid var(--clr-accent);
+    border-bottom: none;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.info-episode-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--clr-accent);
+
+}
+.info-ep-card{
+    padding: 5px 10px;
+    border: 1px solid var(--clr-accent);
+    border-radius: 2px;
+}
+.info-right-section{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+.ep-page-select{
+    width: 150px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    color: var(--clr-accent);
+    font-weight: 600;
+    font-size: 16px;
+}
+.info-episode-title{
+    font-size: 16px;
+    font-weight: 600;
+
+}
+.info-page-select-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+}
+.info-page-select-container span{
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width:640px) {
+    .info-top-section{
+        flex-direction: column;
+    }
+    .info-top-right{
+        width: 100%;
+    }
+    .info-episode-section{
+        width: 100%;
+    }
+    .info-right-section{
+        display: none;
+    }
+}
+
+@media screen and (max-width:640px) {
+    .info-top-left{
+        flex-direction: column;
+    }
+    .info-poster{
+        width: 100%;
+    }
+    .info-episode-section{
+        padding: 10px;
+    }
+}

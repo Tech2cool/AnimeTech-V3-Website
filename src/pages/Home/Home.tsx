@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import VerticalSlider from '../../component/VerticalSlider/VerticalSlider';
 import Layout from '../../Layout/Layout';
 import BigSlider from './BigSlider';
 import { Item, QueryResp } from '../../utils/contstant';
@@ -7,16 +6,21 @@ import {
     fetchHome,
     fetchMovies,
     fetchPopular,
+    fetchRandom,
     fetchRecentRelease,
     fetchTopAiring,
 } from '../../query/v1';
-import HorizontalSlider from '../../component/HorizontalSlider/HorizontalSlider';
 import './index.css';
 import { toast } from 'react-toastify';
-import WideSlider from './WideSlider';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
 import GenreList from '../../component/GenreList/GenreList';
 import Top10List from '../../component/Top10List/Top10List';
+import { lazy, Suspense } from 'react';
+import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
+
+const VerticalSlider = lazy(() => import('../../component/VerticalSlider/VerticalSlider'));
+const HorizontalSlider = lazy(() => import('../../component/HorizontalSlider/HorizontalSlider'));
+const WideSlider = lazy(() => import('./WideSlider'));
 
 interface HonmeQuery {
     code: number;
@@ -34,6 +38,8 @@ interface HonmeQuery {
         list: Item[];
     };
 }
+const randomTime = `${new Date().getTime()}`;
+
 const Home = () => {
     const { data, error, isLoading } = useQuery<QueryResp, Error>({
         queryKey: ['recent-release', 1],
@@ -67,6 +73,15 @@ const Home = () => {
     });
 
     const {
+        data: random,
+        error: errorRandom,
+        isLoading: isLoadingRandom,
+    } = useQuery<QueryResp, Error>({
+        queryKey: ['Random', randomTime],
+        queryFn: () => fetchRandom({ id: randomTime }),
+    });
+
+    const {
         data: home,
         error: errorHome,
         isLoading: isLoadingHome,
@@ -91,7 +106,8 @@ const Home = () => {
 
     return (
         <Layout>
-                <BigSlider />
+            <BigSlider />
+            <Suspense fallback={<SkeletonComp />}>
             <div className="home-container">
                 <VerticalSlider
                     title="Recent Releases"
@@ -136,12 +152,17 @@ const Home = () => {
                             seeAllLocation="/season"
                         />
                         <ListViewItems
-                            list={movies?.list?.slice(0,18)}
+                            list={movies?.list?.slice(0, 18)}
                             isLoading={isLoadingMovies}
-                            title={"Anime Movies"}
+                            title={'Anime Movies'}
                             seeAllLocation="/movies"
                         />
-
+                        <ListViewItems
+                            list={random?.list?.slice(0, 18)}
+                            isLoading={isLoadingRandom}
+                            title={'Random Animes'}
+                            seeAllLocation={`/random/${randomTime}`}
+                        />
                     </div>
                     <div className="home-right-sec">
                         <GenreList />
@@ -149,6 +170,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            </Suspense>
+
         </Layout>
     );
 };

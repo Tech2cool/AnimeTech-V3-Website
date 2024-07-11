@@ -2,7 +2,8 @@
     display: flex;
     gap: 30px;
     align-items: center;
-    background-color: var(--clr-bg-2);
+    /* background-color: var(--clr-bg-2); */
+    background: linear-gradient(180deg, rgba(0,0,0,0.3449754901960784) 17%, rgba(0,0,0,0.07886904761904767) 88%);
     position: absolute;
     top: 0;
     right: 0;
@@ -10,8 +11,14 @@
     z-index: 2;
     backdrop-filter: blur(5px);
     padding: 3px 60px;
+    /* transition: 0.3s all; */
+    
 }
-
+.nav-sticky{
+    position: sticky;
+    transition: top 0.3s ease-in-out, position 0.3s ease-in-out;
+    top: 0;
+}
 .nav-logo {
     display: flex;
     font-size: 1.5rem;
@@ -102,11 +109,12 @@
         padding: 10px 8px;
     }
     .nav-ad-texts,
+    .nav_contact_container,
     .nav-ad-texts {
         display: none;
     }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
     .nav-container {
         gap: 15px;
         padding: 10px 8px;

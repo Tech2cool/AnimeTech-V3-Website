@@ -57,6 +57,7 @@
 .hs-card-tags {
     display: flex;
     gap: 10px;
+    overflow: hidden;
 }
 .hs-card-tag {
     display: flex;

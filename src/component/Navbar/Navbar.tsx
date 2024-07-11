@@ -6,9 +6,10 @@ import { useSetting } from '../../context/SettingContext';
 import { FaDiscord, FaGithub, FaRandom, FaTwitter } from 'react-icons/fa';
 import { PiListHeartBold } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 const Navbar = () => {
     const { setting, setSetting } = useSetting();
-
+    const [navPosition, setNavPosition] = useState<string>('absolute')
     const setActiveLang = (item: string) => {
         setSetting((prev) => ({
             ...prev,
@@ -22,15 +23,10 @@ const Navbar = () => {
             drawerOpen: !setting.drawerOpen,
         });
     };
-    // const setActiveProvider = (item: string) => {
-    //     setSetting((prev) => ({
-    //         ...prev,
-    //         provider: item,
-    //     }));
-    // };
+
 
     return (
-        <div className="nav-container">
+        <div className={`nav-container`}>
             <div className="nav-icon" onClick={closeSidebar}>
                 <BiMenu size={30} />
             </div>

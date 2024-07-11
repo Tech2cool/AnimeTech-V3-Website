@@ -14,6 +14,7 @@ import { PiFilmSlate, PiTelevision } from 'react-icons/pi';
 import { LuClock } from 'react-icons/lu';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
+import SkeletonComp from '../../component/SkeletonComp/SkeletonComp.tsx';
 
 interface DataAiring {
     list: Item[] | undefined;
@@ -85,21 +86,19 @@ const WideSlider = ({ list, isLoading }: DataAiring) => {
         swiperRef.current?.swiper.slideNext();
     }, []);
 
+    if(isLoading){
+        return(
+            <SkeletonComp 
+            style={{
+                width: '100vw',
+                height: '35vh',
+                margin: '4px 2px',
+            }}/>
+        )
+    }
+
     return (
         <div className="wide-slider-container">
-            {isLoading
-                ? [1, 2, 3, 4, 5, 6].map((num) => (
-                      <div
-                        key={num}
-                          style={{
-                              width: '100vw',
-                              height: '65vh',
-                              backgroundColor: 'gray',
-                              margin: '4px 2px',
-                          }}
-                      ></div>
-                  ))
-                : ''}
             <Swiper
                 ref={swiperRef}
                 slidesPerView={1}

@@ -7,13 +7,15 @@
 }
 :root {
     --clr-bg-1: #201f31;
-    --clr-bg-2: #2d2b44;
+    --clr-bg-2: rgb(45, 43, 68);
 
     --clr-bg: rgba(7, 19, 32, 0.92);
     --clr-text: rgba(255, 255, 255, 0.87);
     --clr-primary: rgba(22, 134, 255, 0.87);
     --clr-secondary: rgba(99, 99, 99, 0.87);
-    --clr-accent: rgba(246, 75, 206, 0.87);
+    
+    --clr-accent: rgba(255, 114, 187, 0.9);
+    /* --clr-accent: rgba(246, 75, 206, 0.87); */
     --clr-orange: #fd7e14;
     --clr-pink: #e83e8c;
     --clr-info: #17a2b8;

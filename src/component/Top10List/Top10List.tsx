@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Item, QueryResp } from '../../utils/contstant';
 import { fetchTrending } from '../../query/v1';
 import Switch from '../Switch/Switch';
 import './Top10List.css';
 import { useSetting } from '../../context/SettingContext';
-import HorizontalCard from '../HorizontalCard/HorizontalCard';
+import { Link } from 'react-router-dom';
+import { PiTelevision } from 'react-icons/pi';
+import { BiCalendar } from 'react-icons/bi';
+import { TiWeatherPartlySunny } from 'react-icons/ti';
+import SkeletonComp from '../SkeletonComp/SkeletonComp';
 const weeksList = [
     {
         name: 'Today',
@@ -69,6 +73,27 @@ const Top10List = () => {
             return item.animeImg;
         }
     }, []);
+    const memoizedStatus = useCallback((item:Item) => {
+        if (item?.status === 'RELEASING') {
+            return 'Ongoing';
+        } else if (item?.status === 'NOT_YET_RELEASED') {
+            return 'Unreleased';
+        } else if (item?.status) {
+            return item?.status;
+        }
+        else if (item?.req_status) {
+            return item?.req_status;
+        }
+        return "Unknown"
+    }, []);
+
+    const memoizedIsDub = useCallback((item:Item) => {
+        if (item?.isDub) {
+            return 'Dub';
+        } else if (!item?.isDub) {
+            return 'Sub';
+        }
+    }, []);
 
     const handleActive = (state: number) => {
         setTypeNum(state);
@@ -85,23 +110,74 @@ const Top10List = () => {
                 />
             </div>
             <div className="t10-cards">
-                {data?.list?.map((item: Item, index: number) => (
-                    <div className="t10-card" key={item.animeId}>
-                        <div className="t10-rank-poster">
-                            <div className="t10-rank">{index + 1}</div>
-                        </div>
-                        <div className="t10-info">
-                            <div className="t10-poster">
-                                <img src={memoizedPoster(item)} alt="" />
-                            </div>
-                            <div className="t10-info-vert">
-                                <div className="t10-name">
-                                    {memoizedTitle(item)}
+                {
+                    isLoading?[1, 2, 3, 4, 5, 6,7,8,9,10].map((num) => (
+                        <SkeletonComp
+                            key={num}
+                            style={{
+                                width: '350px',
+                                height: '120px',
+                                margin: '4px 2px',
+                            }}
+                            highlightColor='var(--clr-bg-2)'
+                            baseColor='var(--clr-bg-1)'
+                        />
+                    )):(
+                        data?.list?.map((item: Item, index: number) => (
+                            <Link to={`/info/${item.animeId}`} key={item.animeId}>
+                                <div className="t10-card">
+                                    <div className="t10-rank-poster">
+                                        <div className="t10-rank">{index + 1}</div>
+                                    </div>
+                                    <div className="t10-info">
+                                        <div className="t10-poster">
+                                            <img src={memoizedPoster(item)} alt="" />
+                                        </div>
+                                        <div className="t10-info-vert">
+                                            <div className="t10-name">
+                                                {memoizedTitle(item)}
+                                            </div>
+                                            <div className="t10-card-tags">
+                                                <div className="t10-card-tag">
+                                                    <PiTelevision
+                                                        color={'var(--clr-text)'}
+                                                        size={25}
+                                                    />
+                                                    <p>{item?.type || '.'}</p>
+                                                </div>
+                                                <div className="t10-card-tag">
+                                                    <BiCalendar
+                                                        color={'var(--clr-text)'}
+                                                        size={20}
+                                                    />
+                                                    <p>
+                                                        {item?.released ||
+                                                            item?.releasedDate ||
+                                                            '.'}
+                                                    </p>
+                                                </div>
+                                                <div className="t10-card-tag">
+                                                    <TiWeatherPartlySunny
+                                                        color={'var(--clr-text)'}
+                                                        size={25}
+                                                    />
+                                                    <p>{item?.season || ' .'}</p>
+                                                </div>
+                                                
+                                            </div>
+                                            <div className="t10-card-tags" style={{padding:'4px 4px'}}>
+                                            <div className="t10-card-status">Status: {memoizedStatus(item)}</div>
+                                                <p className='t10-c-tag'>{memoizedIsDub(item)}</p>
+                                            </div>
+        
+        
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                            </Link>
+                        ))
+                    )
+                }
             </div>
         </div>
     );

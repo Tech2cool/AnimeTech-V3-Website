@@ -3,6 +3,11 @@
     margin: 10px 0;
     background-color: var(--clr-bg-2);
 }
+.t10-card:hover{
+    opacity: 0.6;
+    background-color: var(--clr-bg-2);
+}
+
 .t10-header{
     display: flex;
     justify-content: space-between;
@@ -16,7 +21,14 @@
 .t10-card{
     display: flex;
     gap: 10px;
-    
+    overflow: hidden;
+}
+.t10-card-tag p{
+    font-size: 14px;
+}
+.t10-card-status{
+    font-size: 14px;
+    text-transform: capitalize;
 }
 .t10-title{
     font-size: 20px;
@@ -52,6 +64,8 @@
     gap: 5px;
     border-bottom: 0.2px solid var(--clr-secondary);
     padding: 5px 0;
+    flex-wrap: wrap;
+
 }
 .t10-name{
     display: -webkit-box;
@@ -59,4 +73,36 @@
     line-clamp: 2;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    font-size: 15px;
+    font-weight: 600;
+}
+.t10-card-tag{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+.t10-c-tag{
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid var(--clr-accent);
+    color: var(--clr-accent);
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: none;
+    align-self: flex-start;
+}
+.t10-card-tags{
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 5px;
+}
+@media screen and (max-width:640px) {
+    .t10-container{
+        display: none;
+    }
+    
 }

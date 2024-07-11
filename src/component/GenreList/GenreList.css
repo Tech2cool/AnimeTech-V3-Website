@@ -50,3 +50,10 @@
 .genre-genre:hover {
     background-color: var(--clr-secondary);
 }
+
+@media screen and (max-width:640px) {
+    .genres-container{
+        display: none;
+    }
+    
+}

@@ -4,15 +4,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import HorizontalCard from '../HorizontalCard/HorizontalCard';
 import './HorizontalSlider.css';
 import { FaAngleRight } from 'react-icons/fa';
+import SkeletonComp from '../SkeletonComp/SkeletonComp';
 
 interface VSlider {
     title: string;
     list: Item[] | undefined;
     seeAllLocation: string;
-    isLoading?:boolean
+    isLoading?: boolean;
 }
 
-const HorizontalSlider = ({ title, list, seeAllLocation,isLoading=false }: VSlider) => {
+const HorizontalSlider = ({
+    title,
+    list,
+    seeAllLocation,
+    isLoading = false,
+}: VSlider) => {
     const navigate = useNavigate();
 
     const goToSeeAll = () => {
@@ -23,28 +29,24 @@ const HorizontalSlider = ({ title, list, seeAllLocation,isLoading=false }: VSlid
         <div className="hs-container">
             <div className="hs-title">{title}</div>
             <div className="hs-cards">
-                {
-                    isLoading? (
-                        [1, 2, 3, 4, 5, 6].map((num) => (
-                            <div
-                            key={num}
-
-                                style={{
-                                    width: "450px",
-                                    height: "120px",
-                                    backgroundColor: 'gray',
-                                    margin:"4px 2px"
-                                }}
-                            >
-                            </div>
+                {isLoading
+                    ? [1, 2, 3, 4, 5, 6].map((num) => (
+                          <SkeletonComp
+                              key={num}
+                              style={{
+                                  width: '450px',
+                                  height: '120px',
+                                  margin: '4px 2px',
+                              }}
+                          />
+                      ))
+                    : (
+                        list?.map((item: Item) => (
+                            <Link key={item?.animeId} to={`/info/${item?.animeId}`}>
+                                <HorizontalCard item={item} />
+                            </Link>
                         ))
-                    ):""
-                }
-                {list?.map((item: Item) => (
-                    <Link key={item?.animeId} to={`/info/${item?.animeId}`}>
-                        <HorizontalCard item={item} />
-                    </Link>
-                ))}
+                    )}
             </div>
             <div className="hs-view-more" onClick={goToSeeAll}>
                 View More

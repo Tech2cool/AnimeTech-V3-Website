@@ -63,12 +63,19 @@ const HorizontalCard = ({ item }: hItem) => {
             return 'Unreleased';
         } else if (item?.status) {
             return item?.status;
-        }
-        else if (item?.req_status) {
+        } else if (item?.req_status) {
             return item?.req_status;
         }
-        return "Unknown"
+        return 'Unknown';
     }, [item?.status]);
+
+    const memoizedIsDub = useMemo(() => {
+        if (item?.isDub) {
+            return 'Dub';
+        } else if (!item?.isDub) {
+            return 'Sub';
+        }
+    }, [item?.isDub]);
 
     return (
         <div className="hs-card-container">
@@ -94,7 +101,12 @@ const HorizontalCard = ({ item }: hItem) => {
                         <p>{item?.season || ' .'}</p>
                     </div>
                 </div>
-                <div className="hs-card-status">Status: {memoizedStatus}</div>
+                <div className="hs-card-tags" style={{ padding: '4px 4px' }}>
+                    <div className="hs-card-status">
+                        Status: {memoizedStatus}
+                    </div>
+                    <p className="t10-c-tag">{memoizedIsDub}</p>
+                </div>
             </div>
         </div>
     );

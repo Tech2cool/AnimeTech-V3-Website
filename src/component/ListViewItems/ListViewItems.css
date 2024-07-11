@@ -1,7 +1,6 @@
 
 .list-view-container{
     margin: 0 20px;
-
 }
 
 .lv-title-see-more{
@@ -18,8 +17,9 @@
     flex-wrap: wrap;
 }
 .lv-title{
-    font-weight: 600;
+    font-weight: 700;
     font-size: 20px;
+    color: var(--clr-text);
 }
 .lv-view-more{
     font-weight: 600;

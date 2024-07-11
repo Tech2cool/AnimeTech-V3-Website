@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchTopAiring } from '../../query/v1.ts';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -16,6 +16,7 @@ import { PiFilmSlate, PiTelevision } from 'react-icons/pi';
 import { LuClock } from 'react-icons/lu';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
+import SkeletonComp from '../../component/SkeletonComp/SkeletonComp.tsx';
 
 interface DataAiring {
     code: number;
@@ -35,7 +36,7 @@ interface DataAiring {
 
 const BigSlider = () => {
     const { setting } = useSetting();
-    const swiperRef = useRef(null);
+    const swiperRef = useRef<SwiperRef>(null);
     const navigate = useNavigate();
     const { data, error, isLoading } = useQuery<DataAiring, Error>({
         queryKey: ['top-airing', 1],
@@ -86,8 +87,8 @@ const BigSlider = () => {
         }
     }, []);
 
-    const onClickWatch = (id: string) => {
-        navigate(`/watch/${id.slice(0, -1) + '1'}`);
+    const onClickWatch = (id: string, episodeId:string) => {
+        navigate(`/watch/${id}/${episodeId.slice(0, -1) + '1'}`);
     };
 
     const onClickInfo = (id: string) => {
@@ -103,21 +104,18 @@ const BigSlider = () => {
         swiperRef.current?.swiper.slideNext();
     }, []);
 
+    if (isLoading) {
+        return (
+            <SkeletonComp
+                style={{
+                    margin: '4px 2px',
+                    height:"65vh"
+                }}
+            />
+        );
+    }
     return (
         <div className="big-slider-container">
-            {isLoading
-                ? [1, 2, 3, 4, 5, 6].map((num) => (
-                      <div
-                        key={num}
-                          style={{
-                              width: "100vw",
-                              height:'65vh',
-                              backgroundColor: 'gray',
-                              margin: '4px 2px',
-                          }}
-                      ></div>
-                  ))
-                : ''}
             <Swiper
                 ref={swiperRef}
                 slidesPerView={1}
@@ -185,7 +183,7 @@ const BigSlider = () => {
                                     <button
                                         className="swiper-btn swiper-watch-now"
                                         onClick={() =>
-                                            onClickWatch(item?.episodeId)
+                                            onClickWatch(item?.animeId, item?.episodeId)
                                         }
                                     >
                                         <FaRegPlayCircle

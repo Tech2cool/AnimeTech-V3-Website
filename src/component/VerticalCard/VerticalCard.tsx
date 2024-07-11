@@ -71,6 +71,15 @@ const VerticalCard = ({ item, showEpisode = false }: VertCard) => {
         }
     }, [item?.status]);
 
+    const memoizedIsDub = useMemo(() => {
+        if (item?.isDub) {
+            return 'Dub';
+        } else if (!item?.isDub) {
+            return 'Sub';
+        }
+    }, [item?.isDub]);
+
+
     return (
         <div className="vert-container">
             <div className="vert-poster-container">
@@ -89,6 +98,10 @@ const VerticalCard = ({ item, showEpisode = false }: VertCard) => {
                 <div className={`vert-tag ${item?.type ?'':'disable'}`}>
                     {item?.type}
                 </div>
+                <div className={`vert-tag ${item?.status ?'':'disable'}`}>
+                    {memoizedIsDub}
+                </div>
+
                 <div className={`vert-tag ${item?.status ?'':'disable'}`}>
                     {memoizedStatus}
                 </div>

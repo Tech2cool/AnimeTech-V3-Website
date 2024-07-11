@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import 'swiper/css';
 import './VerticalSlider.css';
+import SkeletonComp from '../SkeletonComp/SkeletonComp';
 
 interface VSlider {
     title: string;
@@ -40,6 +41,7 @@ const VerticalSlider = ({
     const goToSeeAll = () => {
         navigate(seeAllLocation);
     };
+
     return (
         <div className="vs-container">
             <div className="vs-title">
@@ -47,92 +49,91 @@ const VerticalSlider = ({
                 <p onClick={goToSeeAll}>See all</p>
             </div>
             <div className="vs-cards">
-                {isLoading
-                    ? [1, 2, 3, 4, 5, 6,7,8,9].map((num) => (
-                          <div
+                {isLoading ? (
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                        <SkeletonComp
                             key={num}
-                              style={{
-                                  width: "200px",
-                                  height: "260px",
-                                  backgroundColor: 'gray',
-                                  margin:"5px 10px"
-                              }}
-                          >
-                          </div>
-                      ))
-                    : ''}
-                <Swiper
-                    ref={swiperRef}
-                    slidesPerView={7}
-                    modules={[Navigation, Pagination]}
-                    breakpoints={{
-                        200: {
-                            slidesPerView: 2,
-                            spaceBetween: 2,
-                        },
-                        300: {
-                            slidesPerView: 2,
-                            spaceBetween: 2,
-                        },
-                        700: {
-                            slidesPerView: 3,
-                            spaceBetween: 4,
-                        },
-                        900: {
-                            slidesPerView: 4,
-                            spaceBetween: 10,
-                        },
-                        1100: {
-                            slidesPerView: 5,
-                            spaceBetween: 10,
-                        },
-                        1200: {
-                            slidesPerView: 5,
-                            spaceBetween: 10,
-                        },
-                        1300: {
-                            slidesPerView: 5,
-                            spaceBetween: 10,
-                        },
+                            style={{
+                                width: '200px',
+                                height: '260px',
+                                margin: '5px 10px',
+                            }}
+                        />
+                    ))
+                ) : (
+                    <Swiper
+                        ref={swiperRef}
+                        slidesPerView={7}
+                        modules={[Navigation, Pagination]}
+                        breakpoints={{
+                            200: {
+                                slidesPerView: 2,
+                                spaceBetween: 2,
+                            },
+                            300: {
+                                slidesPerView: 2,
+                                spaceBetween: 2,
+                            },
+                            700: {
+                                slidesPerView: 3,
+                                spaceBetween: 4,
+                            },
+                            900: {
+                                slidesPerView: 4,
+                                spaceBetween: 10,
+                            },
+                            1100: {
+                                slidesPerView: 5,
+                                spaceBetween: 10,
+                            },
+                            1200: {
+                                slidesPerView: 5,
+                                spaceBetween: 10,
+                            },
+                            1300: {
+                                slidesPerView: 5,
+                                spaceBetween: 10,
+                            },
 
-                        1600: {
-                            slidesPerView: 6,
-                            spaceBetween: 10,
-                        },
-                        1800: {
-                            slidesPerView: 7,
-                            spaceBetween: 10,
-                        },
-                        2000: {
-                            slidesPerView: 8,
-                            spaceBetween: 10,
-                        },
-                        default: {
-                            slidesPerView: 8,
-                            spaceBetween: 10,
-                        },
-                    }}
-                >
-                    <div className="vr-cards-2">
-                        {list?.map((item: Item, index: number) => (
-                            <SwiperSlide key={item?.animeId || index}>
-                                <Link
-                                    to={
-                                        isVideo
-                                            ? `/watch/${item?.episodeId}`
-                                            : `/info/${item?.animeId}`
-                                    }
-                                    className="swiper-slide-slider"
-                                >
-                                    <VerticalCard
-                                        item={item}
-                                        showEpisode={true}
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))}
-                    </div>
-                </Swiper>
+                            1600: {
+                                slidesPerView: 6,
+                                spaceBetween: 10,
+                            },
+                            1800: {
+                                slidesPerView: 7,
+                                spaceBetween: 10,
+                            },
+                            2000: {
+                                slidesPerView: 8,
+                                spaceBetween: 10,
+                            },
+                            default: {
+                                slidesPerView: 8,
+                                spaceBetween: 10,
+                            },
+                        }}
+                    >
+                        <div className="vr-cards-2">
+                            {list?.map((item: Item, index: number) => (
+                                <SwiperSlide key={item?.animeId || index}>
+                                    <Link
+                                        to={
+                                            isVideo
+                                                ? `/watch/${item?.animeId}/${item?.episodeId}`
+                                                : `/info/${item?.animeId}`
+                                        }
+                                        className="swiper-slide-slider"
+                                    >
+                                        <VerticalCard
+                                            item={item}
+                                            showEpisode={true}
+                                        />
+                                    </Link>
+                                </SwiperSlide>
+                            ))}
+                        </div>
+                    </Swiper>
+                )}
                 <div className="swiper-btns-slider">
                     <div
                         className="swiper-btn swiper-prev slider-prev"

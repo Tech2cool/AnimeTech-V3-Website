@@ -2,7 +2,7 @@ import axios from 'axios';
 import {SERVER_BASE_URL} from '../utils/contstant';
 
 interface Id{
-  id:string
+  id:string | undefined
 }
 interface Movies{
   page:number
@@ -35,7 +35,6 @@ export const fetchRecentRelease = async ({page = 1}) => {
   try {
     const url = `${SERVER_BASE_URL}/recent?page=${page}`;
     const resp = await axios.get(url);
-    console.log({recent:resp.data})
     return resp.data;
   } catch (error) {
     throw new Error(`${error}`)
@@ -122,7 +121,7 @@ export const fetchEpisodes = async ({id}:Id) => {
     const url = `${SERVER_BASE_URL}/episodes/${id}`;
 
     const resp = await axios.get(url);
-    // console.log(resp.data)
+    console.log(resp.data)
     return resp.data;
   } catch (error) {
     throw new Error(`${error}`)
