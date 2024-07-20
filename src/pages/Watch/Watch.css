@@ -1,0 +1,131 @@
+.watch-container{
+    margin: 100px;
+    display: flex;
+    gap: 20px;
+
+}
+.watch-left{
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+}
+
+.watch-right{
+    flex: 1;
+}
+.watch-video-container{
+    max-width: 1280px;
+    max-height: 768px;
+    aspect-ratio: 16/9;
+    border-radius: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+.loading-abs{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    bottom: 50%;
+    right: 50%;
+    background-color: aqua;
+    z-index: 3;
+}
+.watch-episode-section{
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    flex-direction: 1;
+    width: 100%;
+    background-color: var(--clr-bg-2);
+    border-radius: 10px;
+    aspect-ratio: 9/15.4;
+    overflow: hidden;
+}
+.watch-episode-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    margin-top: 10px;
+    /* border: 1px solid var(--clr-accent); */
+    border-bottom: none;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.watch-episode-list{
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(4, auto);
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+}
+.watch-ep-card{
+    padding: 5px 8px;
+    border: 1px solid var(--clr-accent);
+    border-radius: 2px;
+    text-align: center;
+}
+.ep-active{
+    background-color: var(--clr-accent);
+}
+.info-right-section{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+.watch-episode-title{
+    font-size: 16px;
+    font-weight: 600;
+
+}
+.info-page-select-container span{
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize !important;
+}
+
+.ep-page-select{
+    width: 100px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    color: var(--clr-accent);
+    font-weight: 600;
+    font-size: 16px;
+}
+.info-episode-title{
+    font-size: 16px;
+    font-weight: 600;
+
+}
+.info-page-select-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+}
+.info-page-select-container span{
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+
+
+@media screen and (max-width:1100px) {
+    .watch-container{
+        flex-direction: column;
+    }
+    .watch-left{
+        width: 100%;
+        background-color: aliceblue;
+    }
+
+}

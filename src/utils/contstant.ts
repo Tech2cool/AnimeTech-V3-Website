@@ -1,4 +1,5 @@
-export const SERVER_BASE_URL = import.meta.env.DEV ? 'http://localhost:8080': 'https://ani-short.vercel.app';
+export const SERVER_BASE_URL = 'https://ani-short.vercel.app';
+// export const SERVER_BASE_URL = import.meta.env.DEV ? 'http://localhost:8080': 'https://ani-short.vercel.app';
 
 export const qualityPrefs = {
     _default: 'default',

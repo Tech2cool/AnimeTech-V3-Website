@@ -1,25 +1,43 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import "./App.css"
-import Home from "./pages/Home/Home"
-import { SettingContextProvider } from "./context/SettingContext"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import Info from "./pages/Info/Info"
-const queryClient = new QueryClient()
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home/Home';
+import { lazy, Suspense } from 'react';
+import Loading from './component/Loading/Loading';
+const Info = lazy(() => import('./pages/Info/Info'));
+const Watch = lazy(() => import('./pages/Watch/Watch'));
 
 const App = () => {
-  return (
-    <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route
+                    path="/info/:id/:type?"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading LoadingType="HashLoader" color="red" />
+                            }
+                        >
+                            <Info />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/watch/:id/:episodeId?"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading LoadingType="HashLoader" color="red" />
+                            }
+                        >
+                            <Watch />
+                        </Suspense>
+                    }
+                />
+            </Routes>
+        </BrowserRouter>
+    );
+};
 
-    <SettingContextProvider>
-      <Routes>
-         <Route path="/"  element={<Home />}/>
-         <Route path="/info/:id/:type?"  element={<Info />}/>
-      </Routes>
-    </SettingContextProvider>
-    </QueryClientProvider>
-    </BrowserRouter>
-  )
-}
-
-export default App
+export default App;

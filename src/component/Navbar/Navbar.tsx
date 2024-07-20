@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 const Navbar = () => {
     const { setting, setSetting } = useSetting();
-    const [navPosition, setNavPosition] = useState<string>('absolute')
     const setActiveLang = (item: string) => {
         setSetting((prev) => ({
             ...prev,
@@ -30,10 +29,10 @@ const Navbar = () => {
             <div className="nav-icon" onClick={closeSidebar}>
                 <BiMenu size={30} />
             </div>
-            <div className="nav-logo">
+            <Link to={'/'} className="nav-logo">
                 <p>Anime</p>
                 <p>Tech</p>
-            </div>
+            </Link >
             <Searchbar />
 
             <div className="nav_contact_container">

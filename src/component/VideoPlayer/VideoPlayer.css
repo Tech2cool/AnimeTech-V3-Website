@@ -1,0 +1,105 @@
+.player-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.video-controls-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: 0.5s;
+}
+.control-bottom {
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.slider-container {
+    padding: 0 5px;
+    /* overflow: hidden; */
+}
+.slider {
+    width: 100%;
+    height: 5px !important;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+/* Range Slider as a Single Thumb Slider */
+.slider .range-slider__thumb[data-lower] {
+    width: 0;
+}
+.slider .range-slider__thumb[data-upper] {
+    background: var(--clr-accent);
+    height: 15px;
+    width: 15px;
+}
+#sliderRange .range-slider__range {
+    background: var(--clr-accent);
+    width: 100%;
+    transition: height 0.3s;
+    border-radius: 10px;
+}
+
+.slider-volume{
+    width: 80px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.slider-volume-slider{
+    height: 2px !important;
+
+}
+.slider-volume-slider .range-slider__thumb[data-lower] {
+    width: 0;
+}
+.slider-volume-slider .range-slider__thumb[data-upper] {
+    background: var(--clr-accent);
+    height: 15px;
+    width: 15px;
+}
+#sliderRangeVolume .range-slider__range {
+    background: var(--clr-accent);
+    width: 100%;
+    transition: height 0.3s;
+    border-radius: 10px;
+}
+
+.control-bottom-btns {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    gap: 10px;
+    justify-content: space-between;
+    overflow: hidden;
+}
+.control-btns-container {
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+    gap: 10px;
+}
+.control-btn {
+    font-size: 20px;
+    cursor: pointer;
+    flex: none;
+}
+
+.btn-setting {
+    font-size: 25px;
+}
+.btn-fullscreen {
+    font-size: 30px;
+}

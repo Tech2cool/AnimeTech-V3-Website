@@ -57,9 +57,11 @@
         display: none;
     }
     .vs-title{
-        padding-right: 20px;
+        padding:0px 0px;
+        padding-top: 20px;
     }
     .vs-cards{
         gap: 2px;
+        padding: 0;
     }
 }

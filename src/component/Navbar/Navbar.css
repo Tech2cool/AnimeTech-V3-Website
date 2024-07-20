@@ -103,6 +103,18 @@
     font-weight: 600;
     font-size: 1rem;
 }
+@media screen and (max-width: 1200px) {
+    .nav-container {
+        gap: 15px;
+        padding: 10px 20px;
+    }
+    .nav-ad-texts,
+    .nav_contact_container,
+    .nav-ad-texts {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 900px) {
     .nav-container {
         gap: 15px;

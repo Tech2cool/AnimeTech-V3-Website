@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import './VerticalCard.css';
 import { Item } from '../../utils/contstant';
 import { useSetting } from '../../context/SettingContext';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 interface VertCard {
     item: Item;
     showEpisode: boolean;
@@ -83,7 +85,8 @@ const VerticalCard = ({ item, showEpisode = false }: VertCard) => {
     return (
         <div className="vert-container">
             <div className="vert-poster-container">
-                <img src={memoizedPoster} alt={memoizedTitle} />
+                <LazyLoadImage src={memoizedPoster} alt={memoizedTitle}/>
+                {/* <img src={memoizedPoster} alt={memoizedTitle} /> */}
             </div>
             <div className="vert-info-container">
                 <div className="vert-name">{memoizedTitle}</div>

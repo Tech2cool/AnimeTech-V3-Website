@@ -10,6 +10,8 @@ import { PiTelevision } from 'react-icons/pi';
 import { BiCalendar } from 'react-icons/bi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import SkeletonComp from '../SkeletonComp/SkeletonComp';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 const weeksList = [
     {
         name: 'Today',
@@ -111,12 +113,12 @@ const Top10List = () => {
             </div>
             <div className="t10-cards">
                 {
-                    isLoading?[1, 2, 3, 4, 5, 6,7,8,9,10].map((num) => (
+                    !isLoading?[1, 2, 3, 4, 5, 6,7,8,9,10].map((num) => (
                         <SkeletonComp
                             key={num}
                             style={{
-                                width: '350px',
-                                height: '120px',
+                                width: '100%',
+                                height: '100px',
                                 margin: '4px 2px',
                             }}
                             highlightColor='var(--clr-bg-2)'
@@ -131,7 +133,9 @@ const Top10List = () => {
                                     </div>
                                     <div className="t10-info">
                                         <div className="t10-poster">
-                                            <img src={memoizedPoster(item)} alt="" />
+                                        <LazyLoadImage src={memoizedPoster(item)} alt={memoizedTitle(item)}/>
+
+                                            {/* <img src={memoizedPoster(item)} alt="" /> */}
                                         </div>
                                         <div className="t10-info-vert">
                                             <div className="t10-name">

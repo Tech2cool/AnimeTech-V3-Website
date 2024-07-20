@@ -10,9 +10,9 @@ interface Movies{
 }
 
 interface Source{
-  id:string
-  streamServer:string
-  subtype:string
+  id:string | undefined
+  streamServer?:string
+  subtype?:string
 }
 
 
@@ -121,7 +121,6 @@ export const fetchEpisodes = async ({id}:Id) => {
     const url = `${SERVER_BASE_URL}/episodes/${id}`;
 
     const resp = await axios.get(url);
-    console.log(resp.data)
     return resp.data;
   } catch (error) {
     throw new Error(`${error}`)

@@ -17,6 +17,7 @@ import { LuClock } from 'react-icons/lu';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp.tsx';
+import { stripHtmlTags } from '../../utils/HelperFunctions.ts';
 
 interface DataAiring {
     code: number;
@@ -73,7 +74,7 @@ const BigSlider = () => {
 
     const memoizedDesc = useCallback((item: Item) => {
         if (item?.description) {
-            return item?.description;
+            return stripHtmlTags(item?.description);
         }
     }, []);
 

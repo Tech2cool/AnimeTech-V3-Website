@@ -13,6 +13,7 @@ import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { toast } from 'react-toastify';
 import GenreList from '../../component/GenreList/GenreList';
 import Top10List from '../../component/Top10List/Top10List';
+import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
 
 interface PagesType {
     index: number;
@@ -130,6 +131,7 @@ const Info = () => {
                     ? await fetchInfo({ id: id })
                     : await fetchInfoV2({ id: id });
 
+            console.log(resp);
             return resp;
         } catch (err) {
             throw new Error(`${err}`);
@@ -147,6 +149,7 @@ const Info = () => {
     if (errorEpisode) {
         toast(`${errorEpisode}`);
     }
+
     const handlePageSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setEpisodeIndex(parseInt(e.target.value));
     };
@@ -154,231 +157,295 @@ const Info = () => {
         <Layout>
             <div className="info-container">
                 <div className="info-top-section">
-                    <div className="info-top-left">
-                        <div className="info-poster">
-                            <img src={memoizedPoster} alt="" />
-                        </div>
-                        <div className="info-vertical-container">
-                            <div className="info-location">
-                                <ol>
-                                    <Link to="/">Home</Link>
-                                    <Link to="/">
-                                        <li>{data?.type}</li>
-                                    </Link>
-                                    <li className="info-loc-title">
+                    {isLoading ? (
+                        <SkeletonComp
+                            style={{ width: '100vw', height: 500 }}
+                            highlightColor="rgba(255,255,255,0.08)"
+                        />
+                    ) : (
+                        <>
+                            <div className="info-top-left">
+                                <div className="info-poster">
+                                    <img src={memoizedPoster} alt="" />
+                                </div>
+                                <div className="info-vertical-container">
+                                    <div className="info-location">
+                                        <ol>
+                                            <Link to="/">Home</Link>
+                                            <Link to="/">
+                                                <li>{data?.type}</li>
+                                            </Link>
+                                            <li className="info-loc-title">
+                                                {memoizedTitle}
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    <div className="info-name">
                                         {memoizedTitle}
-                                    </li>
-                                </ol>
-                            </div>
-                            <div className="info-name">{memoizedTitle}</div>
-                            <div className="info-tags-container">
-                                {data?.genres.map((genre) => (
-                                    <RandomColorText
-                                        key={genre}
-                                        title={genre}
-                                    />
-                                ))}
-                            </div>
-                            <div
-                                className="info-tags-container"
-                                style={{ gap: '10px', paddingLeft: 10 }}
-                            >
-                                <div className="info-card-tag">
-                                    <PiTelevision
-                                        color={'var(--clr-text)'}
-                                        size={25}
-                                    />
-                                    <p>{data?.type || '.'}</p>
+                                    </div>
+                                    <div className="info-tags-container">
+                                        {data?.genres.map((genre) => (
+                                            <Link
+                                                to={`/genre/${genre}`}
+                                                key={genre}
+                                            >
+                                                <RandomColorText
+                                                    title={genre}
+                                                />
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div
+                                        className="info-tags-container"
+                                        style={{ gap: '10px', paddingLeft: 10 }}
+                                    >
+                                        <div className="info-card-tag">
+                                            <PiTelevision
+                                                color={'var(--clr-text)'}
+                                                size={25}
+                                            />
+                                            <p>{data?.type || '.'}</p>
+                                        </div>
+                                        <div className="info-card-tag">
+                                            <BiCalendar
+                                                color={'var(--clr-text)'}
+                                                size={20}
+                                            />
+                                            <p>
+                                                {data?.released ||
+                                                    data?.releasedDate ||
+                                                    '.'}
+                                            </p>
+                                        </div>
+                                        <div className="info-card-tag">
+                                            <TiWeatherPartlySunny
+                                                color={'var(--clr-text)'}
+                                                size={25}
+                                            />
+                                            <p>{data?.season || ' .'}</p>
+                                        </div>
+                                    </div>
+                                    <div className={`info-desc`}>
+                                        <p
+                                            className={`${
+                                                showDesc
+                                                    ? 'show-desc'
+                                                    : 'hide-desc'
+                                            }`}
+                                        >
+                                            {data?.description ||
+                                                data?.synopsis}
+                                        </p>
+                                        <p
+                                            className="desc-btn"
+                                            onClick={handleShowDesc}
+                                        >
+                                            {showDesc
+                                                ? 'Hide Desc'
+                                                : 'Show More...'}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="info-card-tag">
-                                    <BiCalendar
-                                        color={'var(--clr-text)'}
-                                        size={20}
-                                    />
-                                    <p>
-                                        {data?.released ||
-                                            data?.releasedDate ||
-                                            '.'}
-                                    </p>
-                                </div>
-                                <div className="info-card-tag">
-                                    <TiWeatherPartlySunny
-                                        color={'var(--clr-text)'}
-                                        size={25}
-                                    />
-                                    <p>{data?.season || ' .'}</p>
-                                </div>
                             </div>
-                            <div className={`info-desc`}>
-                                <p
-                                    className={`${
-                                        showDesc ? 'show-desc' : 'hide-desc'
+                            <div className="info-top-right">
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.title?.english ||
+                                        !data?.animeTitle?.english
+                                            ? 'info-disable'
+                                            : ''
                                     }`}
                                 >
-                                    {data?.description || data?.synopsis}
-                                </p>
-                                <p
-                                    className="desc-btn"
-                                    onClick={handleShowDesc}
+                                    <p className="info-other-heading">
+                                        English:
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.title?.english ||
+                                            data?.animeTitle?.english}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.title?.english_jp ||
+                                        !data?.animeTitle?.english_jp
+                                            ? 'info-disable'
+                                            : ''
+                                    }`}
                                 >
-                                    {showDesc ? 'Hide Desc' : 'Show More...'}
-                                </p>
+                                    <p className="info-other-heading">
+                                        Romaji / Native:
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.title?.english_jp ||
+                                            data?.animeTitle?.english_jp}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.title?.japanese ||
+                                        !data?.animeTitle?.japanese
+                                            ? 'info-disable'
+                                            : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Japanese:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.title?.japanese ||
+                                            data?.animeTitle?.japanese}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.otherName ? 'info-disable' : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Other Names:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.otherName}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.status ? 'info-disable' : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Status:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {memoizedStatus}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.released || !data?.releasedDate
+                                            ? 'info-disable'
+                                            : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Aired:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        ? ?{' '}
+                                        {data?.released || data?.releasedDate}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.type ? 'info-disable' : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">Type: </p>
+                                    <p className="info-other-text">
+                                        {data?.type}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.isDub ? 'info-disable' : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Dub / Sub:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {memoizedIsDub}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.totalEpisodes
+                                            ? 'info-disable'
+                                            : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Total Episodes:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.totalEpisodes}
+                                    </p>
+                                </div>
+
+                                <div
+                                    className={`info-other-name ${
+                                        !data?.season ? 'info-disable' : ''
+                                    }`}
+                                >
+                                    <p className="info-other-heading">
+                                        Premiered:{' '}
+                                    </p>
+                                    <p className="info-other-text">
+                                        {data?.season}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="info-top-right">
-                        <div
-                            className={`info-other-name ${
-                                !data?.title?.english ||
-                                !data?.animeTitle?.english
-                                    ? 'info-disable'
-                                    : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">English:</p>
-                            <p className="info-other-text">
-                                {data?.title?.english ||
-                                    data?.animeTitle?.english}
-                            </p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.title?.english_jp ||
-                                !data?.animeTitle?.english_jp
-                                    ? 'info-disable'
-                                    : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">
-                                Romaji / Native:
-                            </p>
-                            <p className="info-other-text">
-                                {data?.title?.english_jp ||
-                                    data?.animeTitle?.english_jp}
-                            </p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.title?.japanese ||
-                                !data?.animeTitle?.japanese
-                                    ? 'info-disable'
-                                    : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Japanese: </p>
-                            <p className="info-other-text">
-                                {data?.title?.japanese ||
-                                    data?.animeTitle?.japanese}
-                            </p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.otherName ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Other Names: </p>
-                            <p className="info-other-text">{data?.otherName}</p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.status ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Status: </p>
-                            <p className="info-other-text">{memoizedStatus}</p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.released || !data?.releasedDate
-                                    ? 'info-disable'
-                                    : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Aired: </p>
-                            <p className="info-other-text">
-                                ? ? {data?.released || data?.releasedDate}
-                            </p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.type ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Type: </p>
-                            <p className="info-other-text">{data?.type}</p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.isDub ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Dub / Sub: </p>
-                            <p className="info-other-text">{memoizedIsDub}</p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.totalEpisodes ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">
-                                Total Episodes:{' '}
-                            </p>
-                            <p className="info-other-text">
-                                {data?.totalEpisodes}
-                            </p>
-                        </div>
-
-                        <div
-                            className={`info-other-name ${
-                                !data?.season ? 'info-disable' : ''
-                            }`}
-                        >
-                            <p className="info-other-heading">Premiered: </p>
-                            <p className="info-other-text">{data?.season}</p>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </div>
 
                 <div className="info-left-right-section">
-                    <div className="info-episode-section">
-                        <div className="info-episode-header">
-                            <div className="info-episode-title">Total Episodes: {data?.totalEpisodes || dataEpisode?.episodes?.length}</div>
-                            <div className="info-page-select-container">
-                            <span>Pages {" > "}</span>
-                            <select
-                                className='ep-page-select'
-                                name="episode-pages"
-                                onChange={handlePageSelection}
-                                value={episodeIndex}
-                            >
-                                {dataEpisode?.pages.map((item) => (
-                                    <option key={item.index} value={item.index}>
-                                        {item.title}
-                                    </option>
-                                ))}
-                            </select>
-                            </div>
-
-                        </div>
-                        <div className="info-episode-list">
-                            {dataEpisode?.list[episodeIndex].map((episode) => (
-                                <Link key={episode.id} to={`/watch/${id}/${episode.id}`}>
-                                <div  className="info-ep-card">
-                                    {episode.title}
+                    {isLoadingEpisode ? (
+                        <SkeletonComp
+                            style={{ width: '70vw', height: '500px', margin:"10px 20px" }}
+                        />
+                    ) : (
+                        <div className="info-episode-section">
+                            <div className="info-episode-header">
+                                <div className="info-episode-title">
+                                    Total Episodes:{' '}
+                                    {data?.totalEpisodes ||
+                                        dataEpisode?.episodes?.length}
                                 </div>
-                                </Link>
-
-                            ))}
+                                <div className="info-page-select-container">
+                                    <span>Pages {' > '}</span>
+                                    <select
+                                        className="ep-page-select"
+                                        name="episode-pages"
+                                        onChange={handlePageSelection}
+                                        value={episodeIndex}
+                                    >
+                                        {dataEpisode?.pages.map((item) => (
+                                            <option
+                                                key={item.index}
+                                                value={item.index}
+                                            >
+                                                {item.title}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="info-episode-list">
+                                {dataEpisode?.list[episodeIndex].map(
+                                    (episode) => (
+                                        <Link
+                                            key={episode.id}
+                                            to={`/watch/${id}/${episode.id}`}
+                                        >
+                                            <div className="info-ep-card">
+                                                {episode.title}
+                                            </div>
+                                        </Link>
+                                    ),
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
+
                     <div className="info-right-section">
                         <GenreList />
                         <Top10List />

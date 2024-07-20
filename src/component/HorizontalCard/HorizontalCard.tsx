@@ -6,6 +6,8 @@ import { PiTelevision } from 'react-icons/pi';
 import { LuClock } from 'react-icons/lu';
 import { BiCalendar } from 'react-icons/bi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 interface hItem {
     item: Item;
 }
@@ -80,7 +82,9 @@ const HorizontalCard = ({ item }: hItem) => {
     return (
         <div className="hs-card-container">
             <div className="hs-card-poster">
-                <img src={memoizedPoster} alt={memoizedTitle} />
+                {/* <img src={memoizedPoster} alt={memoizedTitle} /> */}
+                <LazyLoadImage src={memoizedPoster} alt={memoizedTitle}/>
+
             </div>
             <div className="hs-card-info">
                 <div className="hs-card-name">{memoizedTitle}</div>
