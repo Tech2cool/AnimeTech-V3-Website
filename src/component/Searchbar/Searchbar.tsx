@@ -2,20 +2,26 @@ import { BiSearch } from 'react-icons/bi';
 import './Searchbar.css';
 import { IoMdOptions } from 'react-icons/io';
 import { useSetting } from '../../context/SettingContext';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useDebounce from '../../hooks/useDebounce';
 
 const Searchbar = () => {
     const { setting, setSetting } = useSetting();
 
+    const debouceQuery =  useDebounce(setting.query, 1000)
     const navigate = useNavigate();
     const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-        navigate(`/search/${e.target.value}`);
         setSetting({
             ...setting,
             query: e.target.value,
         });
     };
+    useEffect(()=>{
+        if(!setting.query) return
+        navigate(`/search/${setting.query}`);
+
+    },[debouceQuery,navigate])
     return (
         <div className="search-container">
             <input

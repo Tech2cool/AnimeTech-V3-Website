@@ -60,9 +60,6 @@ const VideoPlayer = (props: ReactPlayerProps) => {
 
         if (internalPlayer) {
 
-            console.log(internalPlayer)
-
-            console.log({ levels: internalPlayer.levels });
             setVideoState((prev) => ({
                 ...prev,
                 levels: internalPlayer.levels,
@@ -74,7 +71,6 @@ const VideoPlayer = (props: ReactPlayerProps) => {
             }
         } else {
             const playerr = playerRef.current?.getInternalPlayer();
-            console.log({playerr:playerr})
             if (playerr) {
                 setVideoState((prev) => ({
                     ...prev,

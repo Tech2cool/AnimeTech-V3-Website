@@ -10,12 +10,15 @@ import Search from './pages/Search/Search';
 import Recent from './pages/Recent/Recent';
 import TopAiring from './pages/TopAiring/TopAiring';
 import Popular from './pages/Popular/Popular';
+import NotFound from './component/NotFound/NotFound';
+import Season from './pages/Season/Season';
+import Upcoming from './pages/Upcoming/Upcoming';
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
                 <Route
                     path="/info/:id/:type?"
                     element={
@@ -88,6 +91,46 @@ const App = () => {
                             }
                         >
                             <Popular />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/season/:season?/:page?"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading LoadingType="HashLoader" color="red" />
+                            }
+                        >
+                            <Season />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/upcoming-anime/:type?/:page?"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading LoadingType="HashLoader" color="red" />
+                            }
+                        >
+                            <Upcoming />
+                        </Suspense>
+                    }
+                />
+
+                <Route
+                    path="*"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading
+                                    LoadingType={'HashLoader'}
+                                    color={'red'}
+                                />
+                            }
+                        >
+                            <NotFound />
                         </Suspense>
                     }
                 />

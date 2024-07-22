@@ -129,7 +129,7 @@
     gap: 10px;
 
 }
-.watch-desc-title, .watch-reactions-container{
+.watch-reactions-container{
     display: flex;
     flex-wrap: wrap;
 }
@@ -141,6 +141,12 @@
 .watch-desc-title{
     font-size: 19px;
     font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 .watch-desc-ep{
     padding-bottom: 15px;
@@ -325,5 +331,11 @@
     .watch-scrollToBtns button:first-child{
         padding: 5px;
         border-bottom: 1px solid var(--clr-secondary);
+    }
+    .watch-desc-title{
+        font-size: 16px;
+    }
+    .watch-desc-ep{
+        font-size: 14px;
     }
 }

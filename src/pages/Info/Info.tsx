@@ -131,7 +131,6 @@ const Info = () => {
                     ? await fetchInfo({ id: id })
                     : await fetchInfoV2({ id: id });
 
-            console.log(resp);
             return resp;
         } catch (err) {
             throw new Error(`${err}`);

@@ -101,3 +101,19 @@ export function VideoDuration(time: number) {
         );
     }
 }
+
+export function replaceLastPathSegment(
+    url: string,
+    newSegment: string | number,
+): string {
+    // Split the URL into segments
+    // eslint-disable-next-line prefer-const
+    let segments = url.split('/');
+
+    // Replace the last segment with the new one, converting newSegment to a string
+    segments[segments.length - 1] = newSegment.toString();
+
+    // Join the segments back into a URL
+    return segments.join('/');
+}
+

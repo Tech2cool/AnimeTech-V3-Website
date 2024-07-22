@@ -104,7 +104,7 @@ interface dataChatsType {
 }
 const Watch = () => {
     const { id, episodeId } = useParams();
-    const [cursor, setCursor] = useState<string| null>(null);
+    const [cursor, setCursor] = useState<string | null>(null);
     const [commentsList, setCommentsList] = useState<typeItems[]>([]);
 
     const { videoState, setVideoState } = useVideoState();
@@ -174,16 +174,17 @@ const Watch = () => {
 
     useEffect(() => {
         if (!dataChats) return;
-        if (commentsList?.length > 0) {
-            setCommentsList([...commentsList, ...dataChats.response]);
-        } else {
+        if (commentsList?.length > 0 && dataChats?.response?.length > 0) {
+            setCommentsList([...commentsList, ...dataChats.response!]);
+        } else if (commentsList?.length <= 0) {
             setCommentsList(dataChats?.response);
         }
     }, [dataChats, setCommentsList]);
 
     const fetchNextPage = () => {
-        if (!dataChats?.cursor?.hasNext && !dataChats?.cursor?.next) return;
-        setCursor(dataChats.cursor.next);
+        if (dataChats?.cursor?.hasNext) {
+            setCursor(dataChats?.cursor?.next);
+        }
     };
     useEffect(() => {
         if (!dataSource) return;
@@ -216,7 +217,6 @@ const Watch = () => {
     const dummy2Ref = useRef<HTMLDivElement>(null);
 
     const scrolltoTop = () => {
-        console.log('scroo top');
         dummy2Ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -280,14 +280,14 @@ const Watch = () => {
                             />
                         </div>
 
-                            <CommentsList
-                                data={dataChats!}
-                                list={commentsList}
-                                thread={dataSource?.thread}
-                                fetchNextChats={fetchNextPage}
-                                scrolltoTop={scrolltoTop}
-                                isLoading={isLoadingChats}
-                            />
+                        <CommentsList
+                            data={dataChats!}
+                            list={commentsList}
+                            thread={dataSource?.thread}
+                            fetchNextChats={fetchNextPage}
+                            scrolltoTop={scrolltoTop}
+                            isLoading={isLoadingChats}
+                        />
                     </div>
                 </div>
                 <div className="watch-right">

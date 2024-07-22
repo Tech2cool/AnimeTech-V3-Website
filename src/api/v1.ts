@@ -30,8 +30,8 @@ interface Search {
     year?: string| undefined;
 }
 interface Seasonal {
-    season: string;
-    page: number;
+    season?: string;
+    page: number | string | undefined;
 }
 interface chatQueryType {
   id: number | string | undefined;
@@ -215,7 +215,7 @@ export const fetchHome = async () => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
-export const fetchUpcoming = async ({ type = undefined, page = 1 }:{type:string| undefined, page:number}) => {
+export const fetchUpcoming = async ({ type = undefined, page = 1 }:{type:string| undefined, page:number| string| undefined}) => {
     try {
         let url = `${SERVER_BASE_URL}/upcoming-anime`;
         if (type) {
