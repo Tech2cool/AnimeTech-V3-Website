@@ -55,7 +55,6 @@ const CommentsList = memo(({
     thread,
     fetchNextChats,
     scrolltoTop,
-    isLoading,
 }: commentListTpe) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { ref, inView } = useInView();
@@ -66,30 +65,12 @@ const CommentsList = memo(({
         }
     }, [inView, fetchNextChats]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (containerRef.current) {
-                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-                if (scrollHeight - scrollTop <= clientHeight + 100 && data?.cursor?.hasNext) {
-                    fetchNextChats();
-                }
-            }
-        };
-
-        const container = containerRef.current;
-        container?.addEventListener('scroll', handleScroll);
-
-        return () => {
-            container?.removeEventListener('scroll', handleScroll);
-        };
-    }, [fetchNextChats, data?.cursor?.hasNext]);
-
     const scrolltoBottom = () => {
-        containerRef.current?.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
+        containerRef.current?.scrollIntoView({behavior:'smooth'});
     };
 
     return (
-        <div className="watch-chat-container" ref={containerRef}>
+        <div className="watch-chat-container">
             <div className="watch-scrollToBtns">
                 <button onClick={scrolltoTop}>TOP</button>
                 <button onClick={scrolltoBottom}>END</button>
@@ -101,9 +82,6 @@ const CommentsList = memo(({
                     <span>Comment</span>
                 </div>
             </div>
-            {isLoading && (
-                <Loading LoadingType='ClipLoader' color="var(--clr-accent)" />
-            )}
             <div className="comments-list">
                 {list?.map((item, index) => (
                     <ChatCard item={item} key={index} />
@@ -117,6 +95,7 @@ const CommentsList = memo(({
                     />
                 )}
             </div>
+            <div className="dummyDiv" ref={containerRef}> </div>
         </div>
     );
 });

@@ -174,9 +174,12 @@ const Watch = () => {
 
     useEffect(() => {
         if (!dataChats) return;
-        if (commentsList?.length > 0 && dataChats?.response?.length > 0) {
-            setCommentsList([...commentsList, ...dataChats.response!]);
-        } else if (commentsList?.length <= 0) {
+        if (!dataChats?.response) return;
+        const oldArr = [...commentsList, ...dataChats.response]
+        // oldArr.push(dataChats.response)
+        if (commentsList?.length > 0) {
+            setCommentsList(oldArr);
+        } else {
             setCommentsList(dataChats?.response);
         }
     }, [dataChats, setCommentsList]);
