@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { CSSProperties, memo } from 'react'
 const colors=[
     'var(--clr-accent)',
     'var(--clr-primary)',
@@ -10,12 +10,13 @@ const colors=[
 ]
 interface RannType{
     title:string
+    styles?:CSSProperties
 }
-const RandomColorText = ({title}:RannType) => {
+const RandomColorText = ({title, styles}:RannType) => {
     const randomColor = colors[Math.floor(Math.random() * 6)];
 
   return (
-    <div className='genre-genre' style={{color:`${randomColor}`}}>{title}</div>
+    <div className='genre-genre' style={{color:`${randomColor}`, ...styles}}>{title}</div>
   )
 }
 

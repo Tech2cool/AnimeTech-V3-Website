@@ -1,9 +1,8 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import './HorizontalCard.css';
 import { Item } from '../../utils/contstant';
 import { useSetting } from '../../context/SettingContext';
 import { PiTelevision } from 'react-icons/pi';
-import { LuClock } from 'react-icons/lu';
 import { BiCalendar } from 'react-icons/bi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { LazyLoadImage } from 'react-lazy-load-image-component';

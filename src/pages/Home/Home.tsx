@@ -9,7 +9,7 @@ import {
     fetchRandom,
     fetchRecentRelease,
     fetchTopAiring,
-} from '../../query/v1';
+} from '../../api/v1';
 import './index.css';
 import { toast } from 'react-toastify';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
@@ -91,17 +91,23 @@ const Home = () => {
     });
 
     if (error) {
-        toast(`${error}`);
+        toast(error?.message);
     }
 
     if (errorTopAiring) {
-        toast(`${errorTopAiring}`);
+        toast(errorTopAiring?.message);
     }
     if (errorPopular) {
-        toast(`${errorPopular}`);
+        toast(errorPopular?.message);
     }
     if (errorHome) {
-        toast(`${errorHome}`);
+        toast(errorHome?.message);
+    }
+    if (errorRandom) {
+        toast(errorRandom?.message);
+    }
+    if (errorMovies) {
+        toast(errorMovies?.message);
     }
 
     return (

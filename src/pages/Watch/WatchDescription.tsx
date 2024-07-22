@@ -1,8 +1,39 @@
-import React, { useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Item } from '../../utils/contstant';
 import { useSetting } from '../../context/SettingContext';
+import RandomColorText from '../../component/GenreList/RandomColorText';
+import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
+import Loading from '../../component/Loading/Loading';
+interface ReactionProp {
+    votes: number;
+    dateAdded: string;
+    text: string;
+    imageUrl: string;
+    id: number;
+    template: number;
+    image: string | null;
+    order: number;
+}
+interface ReactionsType {
+    code: number;
+    message: string;
+    reactions: ReactionProp[];
+}
+interface WatchDescProps {
+    item: Item;
+    dataReaction: ReactionsType | undefined;
+    episodeNum: number | undefined;
+    isLoadingReaction: boolean;
+    isLoadingInfo: boolean;
+}
 
-const WatchDescription = ({ item, dataReaction }: { item: Item }) => {
+const WatchDescription: FC<WatchDescProps> = ({
+    item,
+    dataReaction,
+    episodeNum,
+    isLoadingReaction,
+    isLoadingInfo,
+}) => {
     const list = dataReaction?.reactions?.sort((a, b) => a?.order - b?.order);
     const { setting } = useSetting();
     const memoizedPoster = useMemo(() => {
@@ -54,7 +85,10 @@ const WatchDescription = ({ item, dataReaction }: { item: Item }) => {
         if (item?.episodeNum) {
             return `Episode ${item?.episodeNum}`;
         }
-    }, [item?.episodeNum]);
+        if (episodeNum) {
+            return `Episode ${episodeNum}`;
+        }
+    }, [item?.episodeNum, episodeNum]);
 
     const memoizedStatus = useMemo(() => {
         if (item?.status === 'RELEASING') {
@@ -76,14 +110,35 @@ const WatchDescription = ({ item, dataReaction }: { item: Item }) => {
 
     return (
         <div className="watch-desc-container">
-            <div className="watch-desc-title">{memoizedTitle}</div>
+            {isLoadingInfo && <Loading LoadingType='BarLoader' color='red' />}
+            <img className="watch-desc-img" src={memoizedPoster} alt="poster" />
+
             <div className="watch-desc-bottom">
+                <div className="watch-desc-title">
+                    {memoizedTitle} <span>({memoizedIsDub})</span>
+                </div>
+                <div className="watch-desc-ep">{memoizedEpisodeNum}</div>
                 <div className="watch-reactions-container">
+                    {isLoadingReaction && <SkeletonComp style={{width:"100%", height:50}}/>}
                     {list?.map((item, index) => (
                         <div key={index} className="watch-reaction">
-                            <img src={`https:${item?.imageUrl}`} alt="" />
+                            <img src={`https:${item?.imageUrl}`} alt="icons for reaction" />
                             <span>{item?.votes}</span>
                         </div>
+                    ))}
+                </div>
+
+                <div className="watch-reactions-container watch-genres">
+                    <RandomColorText
+                        title={memoizedStatus!}
+                        styles={{ padding: 0 }}
+                    />
+                    {item?.genres.map((genre) => (
+                        <RandomColorText
+                            key={genre}
+                            title={genre}
+                            styles={{ padding: 0 }}
+                        />
                     ))}
                 </div>
             </div>

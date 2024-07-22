@@ -1,9 +1,9 @@
-import React, { HTMLAttributeAnchorTarget, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import './Info.css';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Item } from '../../utils/contstant';
-import { fetchEpisodes, fetchInfo, fetchInfoV2 } from '../../query/v1';
+import { fetchEpisodes, fetchInfo, fetchInfoV2 } from '../../api/v1';
 import { useSetting } from '../../context/SettingContext';
 import Layout from '../../Layout/Layout';
 import RandomColorText from '../../component/GenreList/RandomColorText';

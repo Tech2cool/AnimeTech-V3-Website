@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import  { useMemo, useState } from 'react'
 import { stripHtmlTags } from '../../utils/HelperFunctions';
 import moment from 'moment';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
@@ -65,7 +65,7 @@ const ChatCard = ({item}:typeItems) => {
                 <span>{`\u2022`}</span>
                 <span className='chat-time-ago'>{moment(item.createdAt).fromNow()}</span>
             </div>
-            <div className={`chat-card-message ${showFullComment ? 'show':''}`}>{memoziedMsg}</div>
+            <div className={`chat-card-message ${showFullComment ? 'show':''}`} onClick={handleClick}>{memoziedMsg}</div>
             <div className="chat-card-icons-wrapper">
                 <div className="chat-card-icon">
                     <AiOutlineLike className='chat-card-icn' />

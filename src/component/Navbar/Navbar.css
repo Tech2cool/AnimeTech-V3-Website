@@ -11,6 +11,7 @@
     z-index: 2;
     backdrop-filter: blur(5px);
     padding: 3px 60px;
+    margin-right: 20px;
     /* transition: 0.3s all; */
     
 }
@@ -149,6 +150,7 @@
     .nav-container {
         gap: 15px;
         padding: 10px 2px;
+        margin-right: 0;
         background: linear-gradient(180deg, rgba(0,0,0,0.3449754901960784) 17%, rgba(0,0,0,0.07886904761904767) 88%);
     }
     .nav-icon{

@@ -1,4 +1,3 @@
-import React from 'react';
 import VideoInfoLayer from './VideoInfoLayer';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useVideoState } from '../../context/VideoStateContext';

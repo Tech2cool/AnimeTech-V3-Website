@@ -1,9 +1,7 @@
-import React, { useCallback, useRef } from 'react';
-import { Item, QueryResp } from '../../utils/contstant';
-import { useQuery } from '@tanstack/react-query';
-import { fetchRecentRelease } from '../../query/v1';
+import { useCallback, useRef } from 'react';
+import { Item } from '../../utils/contstant';
 import VerticalCard from '../VerticalCard/VerticalCard';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
@@ -26,7 +24,7 @@ const VerticalSlider = ({
     isVideo = false,
     isLoading = false,
 }: VSlider) => {
-    const swiperRef = useRef(null);
+    const swiperRef = useRef<SwiperRef>(null);
     const navigate = useNavigate();
     const handlePrev = useCallback(() => {
         if (!swiperRef.current) return;

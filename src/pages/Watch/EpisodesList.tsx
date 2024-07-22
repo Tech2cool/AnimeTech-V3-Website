@@ -1,8 +1,29 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp'
 import { Link } from 'react-router-dom'
-
-const EpisodesList = ({dataEpisode, isLoadingEpisode, episodeId, id}) => {
+interface EpisodeType {
+    id: string;
+    isDub: boolean;
+    number: number;
+    title: string;
+}
+interface PagesType {
+    index: number;
+    page: number;
+    title: string;
+}
+interface EpisodesType {
+    episodes: EpisodeType[];
+    list: EpisodeType[][];
+    pages: PagesType[];
+}
+interface EpisodeListProps{
+    dataEpisode:EpisodesType | undefined;
+    isLoadingEpisode:boolean;
+    episodeId:string | undefined;
+    id:string | undefined;
+}
+const EpisodesList:FC<EpisodeListProps> = ({dataEpisode, isLoadingEpisode, episodeId, id}) => {
     const [episodeIndex, setEpisodeIndex] = useState<number>(0);
 
     const handlePageSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {

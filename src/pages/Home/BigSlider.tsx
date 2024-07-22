@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchTopAiring } from '../../query/v1.ts';
+import { fetchTopAiring } from '../../api/v1.ts';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -18,6 +18,7 @@ import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp.tsx';
 import { stripHtmlTags } from '../../utils/HelperFunctions.ts';
+import { toast } from 'react-toastify';
 
 interface DataAiring {
     code: number;
@@ -105,6 +106,9 @@ const BigSlider = () => {
         swiperRef.current?.swiper.slideNext();
     }, []);
 
+    if(error){
+        toast(error?.message)
+    }
     if (isLoading) {
         return (
             <SkeletonComp

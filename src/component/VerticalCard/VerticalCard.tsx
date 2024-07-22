@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import './VerticalCard.css';
 import { Item } from '../../utils/contstant';
 import { useSetting } from '../../context/SettingContext';

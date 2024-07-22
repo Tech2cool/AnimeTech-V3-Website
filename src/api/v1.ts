@@ -4,6 +4,10 @@ import { SERVER_BASE_URL } from '../utils/contstant';
 interface Id {
     id: string | undefined;
 }
+interface PageType {
+    page: number | string | undefined;
+}
+
 interface Movies {
     page: number;
     alphabet?: string;
@@ -16,14 +20,14 @@ interface Source {
 }
 
 interface Search {
-    page: number;
-    query: string;
-    genre: string;
-    status: string;
-    subtype: string;
-    type: string;
-    season: string;
-    year: string;
+    page: number | string | undefined;
+    query: string| undefined;
+    genre?: string| undefined;
+    status?: string| undefined;
+    subtype?: string| undefined;
+    type?: string| undefined;
+    season?: string| undefined;
+    year?: string| undefined;
 }
 interface Seasonal {
     season: string;
@@ -31,10 +35,10 @@ interface Seasonal {
 }
 interface chatQueryType {
   id: number | string | undefined;
-  cursor: string | undefined;
+  cursor: string | null | undefined;
 }
 
-export const fetchRecentRelease = async ({ page = 1 }) => {
+export const fetchRecentRelease = async ({ page = 1 }:PageType) => {
     try {
         const url = `${SERVER_BASE_URL}/recent?page=${page}`;
         const resp = await axios.get(url);
@@ -44,7 +48,7 @@ export const fetchRecentRelease = async ({ page = 1 }) => {
     }
 };
 
-export const fetchTopAiring = async ({ page = 1 }) => {
+export const fetchTopAiring = async ({ page = 1 }:PageType) => {
     try {
         const url = `${SERVER_BASE_URL}/top-airing?page=${page}`;
         const resp = await axios.get(url);
@@ -56,7 +60,7 @@ export const fetchTopAiring = async ({ page = 1 }) => {
     }
 };
 
-export const fetchTrending = async ({ id = 1 }) => {
+export const fetchTrending = async ({ id }:{id:number}) => {
     try {
         const url = `${SERVER_BASE_URL}/trending/${id}`;
         const resp = await axios.get(url);
@@ -67,9 +71,9 @@ export const fetchTrending = async ({ id = 1 }) => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
-export const fetchPopular = async ({ page = 1 }) => {
+export const fetchPopular = async ({ page = 1 }:PageType) => {
     try {
-        let url = `${SERVER_BASE_URL}/popular?page=${page}`;
+        const url = `${SERVER_BASE_URL}/popular?page=${page}`;
         const resp = await axios.get(url);
         return resp.data;
     } catch (error:any) {
@@ -211,7 +215,7 @@ export const fetchHome = async () => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
-export const fetchUpcoming = async ({ type = undefined, page = 1 }) => {
+export const fetchUpcoming = async ({ type = undefined, page = 1 }:{type:string| undefined, page:number}) => {
     try {
         let url = `${SERVER_BASE_URL}/upcoming-anime`;
         if (type) {
@@ -236,7 +240,7 @@ export const fetchSeasonalAnime = async ({ season, page = 1 }: Seasonal) => {
     }
 };
 
-export const fetchRequestedAnime = async ({ page = 1 }) => {
+export const fetchRequestedAnime = async ({ page = 1 }:PageType) => {
     try {
         const url = `${SERVER_BASE_URL}/requested-list?page=${page}`;
 
@@ -247,7 +251,7 @@ export const fetchRequestedAnime = async ({ page = 1 }) => {
         throw new Error(error.response?.data?.message || error.message);
     }
 };
-export const fetchChats = async ({ id, cursor = undefined }: chatQueryType) => {
+export const fetchChats = async ({ id, cursor = null }: chatQueryType) => {
     try {
         let url = `${SERVER_BASE_URL}/chats/${id}`;
 
@@ -262,7 +266,7 @@ export const fetchChats = async ({ id, cursor = undefined }: chatQueryType) => {
     }
 };
 
-export const fetchReaction = async ({id}) => {
+export const fetchReaction = async ({id}:Id) => {
     try {
       const url = `${SERVER_BASE_URL}/reaction/${id}`;
   

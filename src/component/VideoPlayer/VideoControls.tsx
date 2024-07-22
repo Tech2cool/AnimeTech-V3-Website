@@ -1,29 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useVideoState } from '../../context/VideoStateContext';
-import {
-    FaPlay,
-    FaPause,
-    FaVolumeDown,
-    FaVolumeMute,
-    FaVolumeOff,
-    FaVolumeUp,
-} from 'react-icons/fa';
+import './VideoPlayer.css';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
 import {
-    IoVolumeHigh,
     IoVolumeHighSharp,
-    IoVolumeLow,
     IoVolumeLowSharp,
-    IoVolumeMedium,
     IoVolumeMediumSharp,
-    IoVolumeMute,
     IoVolumeMuteSharp,
 } from 'react-icons/io5';
 
 import { VideoDuration } from '../../utils/HelperFunctions';
 import { IoMdSettings } from 'react-icons/io';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
 
 import {
     MdOutlineFullscreen,
@@ -31,8 +19,19 @@ import {
     MdPictureInPicture,
     MdPictureInPictureAlt,
 } from 'react-icons/md';
-import { FaVolumeHigh, FaVolumeLow } from 'react-icons/fa6';
+import VideoQuality from './VideoQuality';
+import VideoSettings from './VideoSettings';
+import VideoPlaybackRates from './VideoPlaybackRates';
 
+interface controlTypes {
+    handlePlayPause: () => void;
+    handlePipChange: () => void;
+    handleFullscreen: () => void;
+    handleVumeMute: () => void;
+    handleChangeQuality: (level:{videoHeight:string, name:string,height:string}, index:number) => void;
+    handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSliderVolumeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 const VideoControls = ({
     handlePlayPause,
     handlePipChange,
@@ -40,10 +39,11 @@ const VideoControls = ({
     handleFullscreen,
     handleSliderVolumeChange,
     handleVumeMute,
-    videoState, setVideoState
-}) => {
-    // const { videoState, setVideoState } = useVideoState();
+    handleChangeQuality,
+}: controlTypes) => {
+    const { videoState, setVideoState } = useVideoState();
 
+    const refQuality = useRef(null);
     const memozedVolumeIcon = useMemo(() => {
         if (videoState.volume <= 0) {
             return (
@@ -80,9 +80,18 @@ const VideoControls = ({
                 onClick={handleVumeMute}
             />
         );
-    }, [videoState.volume]);
+    }, [videoState.volume, handleVumeMute]);
 
-    
+    const handlePlayPauseWhileTouch = () => {
+        if (!videoState.showControls) return;
+        handlePlayPause();
+    };
+    const handleSettingClick = () => {
+        setVideoState((prev) => ({
+            ...prev,
+            showSettings: !prev.showSettings,
+        }));
+    };
     return (
         <div
             className="video-controls-wrapper"
@@ -90,19 +99,24 @@ const VideoControls = ({
                 opacity: videoState.showControls ? '1' : '0',
             }}
         >
-            <div className="control-top"></div>
-            <div className="control-middle"></div>
+            <div
+                className="control-middle"
+                onClick={handlePlayPauseWhileTouch}
+                onDoubleClick={handleFullscreen}
+                ref={refQuality}
+            ></div>
             <div className="control-bottom">
                 <div className="slider-container">
-                    <RangeSlider
-                        className="slider"
+                    <input
+                        type="range"
                         min={0}
-                        defaultValue={[0, 0]}
-                        max={videoState.duration || 0}
-                        value={videoState.currentTime || 0}
+                        step={1}
+                        max={videoState.duration}
+                        value={videoState.currentTime}
+                        onChange={handleSliderChange}
+                        className="slider"
                         id="sliderRange"
-                        thumbsDisabled={[true, false]}
-                        onInput={handleSliderChange}
+                        style={{ width: '100%' }}
                     />
                 </div>
                 <div className="control-bottom-btns">
@@ -125,21 +139,24 @@ const VideoControls = ({
                         </div>
                         <div className="slider-volume">
                             {memozedVolumeIcon}
-                            <RangeSlider
-                                className="slider-volume-slider"
+
+                            <input
+                                type="range"
                                 min={0}
-                                defaultValue={[0, 0.5]}
                                 max={1}
-                                step={0.1}
                                 value={videoState.volume}
+                                onChange={handleSliderVolumeChange}
+                                className="slider-volume-slider"
                                 id="sliderRangeVolume"
-                                thumbsDisabled={[true, false]}
-                                onInput={handleSliderVolumeChange}
+                                step={0.1}
                             />
                         </div>
                     </div>
                     <div className="control-btns-container">
-                        <IoMdSettings className="control-btn btn-setting" />
+                        <IoMdSettings
+                            className="control-btn btn-setting"
+                            onClick={handleSettingClick}
+                        />
                         {videoState.pip ? (
                             <MdPictureInPicture
                                 className="control-btn btn-setting"
@@ -165,6 +182,9 @@ const VideoControls = ({
                     </div>
                 </div>
             </div>
+            <VideoSettings />
+            <VideoQuality handleChangeQuality={handleChangeQuality} />
+            <VideoPlaybackRates />
         </div>
     );
 };

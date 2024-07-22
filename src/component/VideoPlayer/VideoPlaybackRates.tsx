@@ -54,7 +54,7 @@ const VideoPlaybackRates = () => {
     const handleClick = (name: string, value?: number) => {
         if (!name) return;
 
-        if (name === 'Playback Speed') {
+        if (name === 'Playback Speed' && value) {
             setVideoState((prev) => ({
                 ...prev,
                 playbackRate: value,

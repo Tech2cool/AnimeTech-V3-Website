@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Item, QueryResp } from '../../utils/contstant';
-import { fetchTrending } from '../../query/v1';
+import { fetchTrending } from '../../api/v1';
 import Switch from '../Switch/Switch';
 import './Top10List.css';
 import { useSetting } from '../../context/SettingContext';
@@ -11,6 +11,7 @@ import { BiCalendar } from 'react-icons/bi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import SkeletonComp from '../SkeletonComp/SkeletonComp';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { toast } from 'react-toastify';
 
 const weeksList = [
     {
@@ -100,6 +101,9 @@ const Top10List = () => {
     const handleActive = (state: number) => {
         setTypeNum(state);
     };
+    if(error){
+        toast(error?.message)
+    }
 
     return (
         <div className="t10-container">
@@ -113,7 +117,7 @@ const Top10List = () => {
             </div>
             <div className="t10-cards">
                 {
-                    !isLoading?[1, 2, 3, 4, 5, 6,7,8,9,10].map((num) => (
+                    isLoading?[1, 2, 3, 4, 5, 6,7,8,9,10].map((num) => (
                         <SkeletonComp
                             key={num}
                             style={{

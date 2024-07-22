@@ -1,9 +1,8 @@
-import React from 'react';
 import VideoInfoLayer from './VideoInfoLayer';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useVideoState } from '../../context/VideoStateContext';
 
-const VideoQuality = ({handleChangeQuality}:{handleChangeQuality:(lvl:object, i:number)=>void}) => {
+const VideoQuality = ({handleChangeQuality}:{handleChangeQuality: (level:{videoHeight:string, name:string,height:string}, index:number) => void}) => {
     const { videoState, setVideoState } = useVideoState();
 
     const handleCloseQuality = ()=>{

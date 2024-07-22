@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import Layout from '../../Layout/Layout';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';

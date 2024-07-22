@@ -6,7 +6,6 @@ import { useSetting } from '../../context/SettingContext';
 import { FaDiscord, FaGithub, FaRandom, FaTwitter } from 'react-icons/fa';
 import { PiListHeartBold } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 const Navbar = () => {
     const { setting, setSetting } = useSetting();
     const setActiveLang = (item: string) => {

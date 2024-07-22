@@ -11,15 +11,20 @@
 
 .lv-cards{
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     column-gap: 30px;
     row-gap: 30px;
     flex-wrap: wrap;
 }
 .lv-title{
+    display: -webkit-box;
     font-weight: 700;
     font-size: 20px;
     color: var(--clr-text);
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 .lv-view-more{
     font-weight: 600;
@@ -30,4 +35,41 @@
     /* padding: 2px; */
     cursor: pointer;
 
+}
+
+.list-view-paginations{
+    display: flex;
+    flex: 1;
+    /* background-color: aliceblue; */
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+.list-view-page-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 10px;
+    min-width: 60px;
+    background-color: var(--clr-bg-2);
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 1px 1px rgba(255,255,255,0.1);
+}
+.active{
+    background-color: var(--clr-accent);
+}
+
+@media screen and (max-width:400px) {
+    .list-view-container{
+        margin: 0 0;
+    
+    }
+    .lv-cards{
+        column-gap: 10px;
+        row-gap: 10px;
+
+    }
 }

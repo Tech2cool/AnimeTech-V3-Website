@@ -45,8 +45,15 @@
     gap: 10px;
 }
 .t10-rank{
-    border-bottom: 5px solid var(--clr-accent);
+    border-bottom: 3px solid var(--clr-accent);
     padding: 2px 8px;
+    font-weight: 800;
+    /* width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
 }
 .t10-poster{
     width: 80px;
@@ -65,7 +72,7 @@
     gap: 5px;
     border-bottom: 0.2px solid var(--clr-secondary);
     padding: 5px 0;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 
 }
 .t10-name{

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
 import Layout from '../../Layout/Layout';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useDebounce from '../../hooks/useDebounce';
-import { fetchRecentRelease, searchAnime } from '../../api/v1';
+import { fetchRecentRelease } from '../../api/v1';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
 import "./Search.css"
 import Top10List from '../../component/Top10List/Top10List';

@@ -3,17 +3,19 @@ import './Searchbar.css';
 import { IoMdOptions } from 'react-icons/io';
 import { useSetting } from '../../context/SettingContext';
 import { ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Searchbar = () => {
-    const {setting, setSetting} = useSetting()
+    const { setting, setSetting } = useSetting();
 
-    const onChangeInput = (e:ChangeEvent<HTMLInputElement>)=>{
-
-        setSetting(({
+    const navigate = useNavigate();
+    const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+        navigate(`/search/${e.target.value}`);
+        setSetting({
             ...setting,
-            query:e.target.value,
-        }))
-    }
+            query: e.target.value,
+        });
+    };
     return (
         <div className="search-container">
             <input

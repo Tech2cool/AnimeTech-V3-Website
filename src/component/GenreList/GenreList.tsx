@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { genresList } from '../../utils/contstant';
 import './GenreList.css';
 import RandomColorText from './RandomColorText';

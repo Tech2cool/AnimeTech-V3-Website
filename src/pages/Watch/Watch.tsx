@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import './Watch.css';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { fetchEpisodes, fetchInfo, fetchSource } from '../../query/v1';
+import {
+    fetchChats,
+    fetchEpisodes,
+    fetchInfo,
+    fetchReaction,
+    fetchSource,
+} from '../../api/v1';
 import { Item } from '../../utils/contstant';
 import VideoPlayer from '../../component/VideoPlayer/VideoPlayer';
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
 import { useVideoState } from '../../context/VideoStateContext';
 import { toast } from 'react-toastify';
 import Loading from '../../component/Loading/Loading';
+import EpisodesList from './EpisodesList';
+import CommentsList from './CommentsList';
+import WatchDescription from './WatchDescription';
+import Top10List from '../../component/Top10List/Top10List';
 
 interface SourceTypes {
     sources: {
@@ -42,33 +53,83 @@ interface EpisodesType {
     list: EpisodeType[][];
     pages: PagesType[];
 }
-
+interface ReactionProp {
+    votes: number;
+    dateAdded: string;
+    text: string;
+    imageUrl: string;
+    id: number;
+    template: number;
+    image: string | null;
+    order: number;
+}
+interface ReactionsType {
+    code: number;
+    message: string;
+    reactions: ReactionProp[];
+}
+type autherT = {
+    avatar: {
+        xlarge: {
+            permalink: string;
+        };
+        large: {
+            permalink: string;
+        };
+        small: {
+            permalink: string;
+        };
+        permalink: string;
+    };
+    name: string;
+};
+interface typeItems {
+    author: autherT;
+    message: string;
+    createdAt: string;
+    likes: number;
+    dislikes: number;
+}
+interface dataChatsType {
+    cursor: {
+        prev: string | null;
+        hasNext: true;
+        next: string | null;
+        hasPrev: boolean;
+        total: number;
+        id: string;
+        more: boolean;
+    };
+    response: typeItems[];
+}
 const Watch = () => {
     const { id, episodeId } = useParams();
-    const [episodeIndex, setEpisodeIndex] = useState<number>(0);
+    const [cursor, setCursor] = useState<string| null>(null);
+    const [commentsList, setCommentsList] = useState<typeItems[]>([]);
+
     const { videoState, setVideoState } = useVideoState();
+    const {
+        currentTime,
+        buffering,
+        fullscreen,
+        showControls,
+        loadedTime,
+        levels,
+        quality,
+        showSettings,
+        showPlayBackSpeeds,
+        showQuality,
+        ...newVideoState
+    } = videoState;
+
     const {
         data: dataSource,
         error: errorSource,
         isLoading: isLoadingSource,
     } = useQuery<SourceTypes, Error>({
         queryKey: ['source', episodeId],
-        queryFn: () => fetchSrc(),
+        queryFn: () => fetchSource({ id: episodeId }),
     });
-
-    const fetchSrc = async () => {
-        try {
-            const resp = await fetchSource({ id: episodeId });
-
-            setVideoState((prev) => ({
-                ...prev,
-                url: resp?.sources[0]?.url,
-            }));
-            return resp;
-        } catch (error) {
-            throw new Error(`${error}`);
-        }
-    };
 
     const {
         data: dataInfo,
@@ -83,13 +144,80 @@ const Watch = () => {
         data: dataEpisode,
         error: errorEpisode,
         isLoading: isLoadingEpisode,
-    } = useQuery<EpisodesType, Error>({
+    } = useQuery<EpisodesType | undefined, Error>({
         queryKey: ['episodes', id],
         queryFn: () => fetchEpisodes({ id: id }),
     });
 
-    const handlePageSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setEpisodeIndex(parseInt(e.target.value));
+    const {
+        data: dataChats,
+        isLoading: isLoadingChats,
+        error: errorChats,
+    } = useQuery<dataChatsType>({
+        queryKey: ['Chats', dataSource?.thread?.id, cursor],
+        queryFn: () => fetchChatsDef(),
+    });
+    const fetchChatsDef = async () => {
+        try {
+            const response = await fetchChats({
+                id: dataSource?.thread?.id,
+                cursor: cursor,
+            });
+            return response;
+        } catch (error) {
+            return error;
+
+            // console.log(error);
+            // Alert.alert('error', error?.message);
+        }
+    };
+
+    useEffect(() => {
+        if (!dataChats) return;
+        if (commentsList?.length > 0) {
+            setCommentsList([...commentsList, ...dataChats.response]);
+        } else {
+            setCommentsList(dataChats?.response);
+        }
+    }, [dataChats, setCommentsList]);
+
+    const fetchNextPage = () => {
+        if (!dataChats?.cursor?.hasNext && !dataChats?.cursor?.next) return;
+        setCursor(dataChats.cursor.next);
+    };
+    useEffect(() => {
+        if (!dataSource) return;
+
+        const findFHD =
+            dataSource?.sources.find((src) => src.quality === 'default') ||
+            dataSource?.sources[0];
+
+        if (findFHD) {
+            setVideoState((prev) => ({
+                ...prev,
+                url: findFHD?.url,
+            }));
+        }
+    }, [
+        dataSource,
+        dataSource?.downloadURL,
+        dataSource?.sources,
+        isLoadingSource,
+        setVideoState,
+    ]);
+    const {
+        data: dataReaction,
+        isLoading: isLoadingReaction,
+        error: errorReaction,
+    } = useQuery<ReactionsType | undefined>({
+        queryKey: ['Reactions', dataSource?.thread?.id],
+        queryFn: () => fetchReaction({ id: dataSource?.thread?.id }),
+    });
+    const dummy2Ref = useRef<HTMLDivElement>(null);
+
+    const scrolltoTop = () => {
+        console.log('scroo top');
+        dummy2Ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     if (errorSource) {
@@ -101,10 +229,16 @@ const Watch = () => {
     if (errorInfo) {
         toast(errorInfo?.message);
     }
+    if (errorChats) {
+        toast(errorChats?.message);
+    }
+    if (errorReaction) {
+        toast(errorReaction?.message);
+    }
 
     return (
         <Layout>
-            <div className="watch-container">
+            <div className="watch-container" ref={dummy2Ref}>
                 <div className="watch-left">
                     <div className="watch-video-container">
                         {!videoState.url && (
@@ -115,67 +249,57 @@ const Watch = () => {
                                 }}
                             />
                         )}
-                        <VideoPlayer
-                            width={'100%'}
-                            height={'100%'}
-                            url={videoState.url}
-                            controls={false}
+                        <VideoPlayer {...newVideoState} />
+                        {isLoadingSource && (
+                            <div className="loading-abs">
+                                <Loading
+                                    LoadingType="HashLoader"
+                                    color="var(--clr-accent)"
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div className="watch-info-container">
+                        <WatchDescription
+                            item={dataInfo!}
+                            dataReaction={dataReaction}
+                            episodeNum={
+                                dataEpisode?.episodes.find(
+                                    (ep) => ep.id === episodeId,
+                                )?.number
+                            }
+                            isLoadingReaction={isLoadingReaction}
+                            isLoadingInfo={isLoadingInfo}
                         />
-                        {isLoadingSource && <div className='loading-abs'><Loading LoadingType='HashLoader' color='var(--clr-accent)'/></div>}
+                        <div className="phone-ep-list">
+                            <EpisodesList
+                                dataEpisode={dataEpisode}
+                                isLoadingEpisode={isLoadingEpisode}
+                                episodeId={episodeId}
+                                id={id}
+                            />
+                        </div>
+
+                            <CommentsList
+                                data={dataChats!}
+                                list={commentsList}
+                                thread={dataSource?.thread}
+                                fetchNextChats={fetchNextPage}
+                                scrolltoTop={scrolltoTop}
+                                isLoading={isLoadingChats}
+                            />
                     </div>
                 </div>
                 <div className="watch-right">
-                    <div className="watch-episode-section">
-                        <div className="watch-episode-header">
-                            <div className="watch-episode-title">
-                                Total Episodes:{' '}
-                                {dataEpisode?.episodes?.length}
-                            </div>
-                            <div className="info-page-select-container">
-                                <span>Episodes</span>
-                                <select
-                                    className="ep-page-select"
-                                    name="episode-pages"
-                                    onChange={handlePageSelection}
-                                    value={episodeIndex}
-                                >
-                                    {dataEpisode?.pages.map((item) => (
-                                        <option
-                                            key={item.index}
-                                            value={item.index}
-                                        >
-                                            {item.title}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="watch-episode-list">
-                            {isLoadingEpisode
-                                ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(
-                                      (item) => (
-                                          <SkeletonComp
-                                              key={item}
-                                              style={{ width: 90, height: 40 }}
-                                              highlightColor="var(--clr-bg-2)"
-                                              baseColor="var(--clr-bg-1)"
-                                          />
-                                      ),
-                                  )
-                                : dataEpisode?.list[episodeIndex].map(
-                                      (episode) => (
-                                          <Link
-                                              key={episode.id}
-                                              to={`/watch/${id}/${episode.id}`}
-                                          >
-                                              <div className={`watch-ep-card ${episode.id === episodeId?"ep-active":''}`}>
-                                                  {episode.title}
-                                              </div>
-                                          </Link>
-                                      ),
-                                  )}
-                        </div>
+                    <div className="pc-ep-list">
+                        <EpisodesList
+                            dataEpisode={dataEpisode}
+                            isLoadingEpisode={isLoadingEpisode}
+                            episodeId={episodeId}
+                            id={id}
+                        />
                     </div>
+                    <Top10List />
                 </div>
             </div>
         </Layout>

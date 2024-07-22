@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { useRef } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import './VideoPlayer.css';
 import VideoControls from './VideoControls';
@@ -8,19 +8,44 @@ import screenfull from 'screenfull';
 
 const VideoPlayer = (props: ReactPlayerProps) => {
     const { videoState, setVideoState } = useVideoState();
-
     const playerRef = useRef<ReactPlayer>(null);
-    const playerWrapperRef = useRef(null);
-    const handleMouseEnter = (e: React.MouseEvent) => {
-        setVideoState((prev) => ({
-            ...prev,
-            showControls: true,
-        }));
+    const controlsTimeoutRef = useRef<number | undefined>(undefined);
+    const playerWrapperRef = useRef<HTMLDivElement>(null);
+    const storageKey = `videoPlaybackTime_${videoState.url}`;
+
+    const handleUserInteraction = () => {
+        setVideoState((prev) => ({ ...prev, showControls: true }));
+
+        // if(videoState.showSettings) return
+        // if(videoState.showPlayBackSpeeds) return
+        // if(videoState.showQuality) return
+
+        clearTimeout(controlsTimeoutRef.current);
+        controlsTimeoutRef.current = setTimeout(() => {
+            setVideoState((prev) => ({
+                ...prev,
+                showControls: false,
+                showSettings: false,
+                showQuality: false,
+                showPlayBackSpeeds: false,
+            }));
+        }, 2000); // Hide controls after 2 seconds of inactivity
     };
-    const handleMouseLeave = (e: React.MouseEvent) => {
+
+    const handleMouseMove = () => {
+        handleUserInteraction();
+    };
+    const handleTouchStart = () => {
+        handleUserInteraction();
+    };
+
+    const handleMouseLeave = () => {
         setVideoState((prev) => ({
             ...prev,
             showControls: false,
+            showSettings: false,
+            showQuality: false,
+            showPlayBackSpeeds: false,
         }));
     };
 
@@ -31,11 +56,36 @@ const VideoPlayer = (props: ReactPlayerProps) => {
         }));
     };
     const handleOnReady = (player: ReactPlayer) => {
-        console.log(player);
-        // setVideoState((prev) => ({
-        //     ...prev,
-        //     duration: Math.floor(duration),
-        // }));
+        const internalPlayer = playerRef.current?.getInternalPlayer('hls');
+
+        if (internalPlayer) {
+
+            console.log(internalPlayer)
+
+            console.log({ levels: internalPlayer.levels });
+            setVideoState((prev) => ({
+                ...prev,
+                levels: internalPlayer.levels,
+            }));
+
+            const storedTime = localStorage.getItem(storageKey);
+            if (storedTime) {
+                player.seekTo(parseFloat(storedTime), 'seconds');
+            }
+        } else {
+            const playerr = playerRef.current?.getInternalPlayer();
+            console.log({playerr:playerr})
+            if (playerr) {
+                setVideoState((prev) => ({
+                    ...prev,
+                    quality: playerr?.videoHeight,
+                }));
+            }
+            const storedTime = localStorage.getItem(storageKey);
+            if (storedTime) {
+                player.seekTo(parseFloat(storedTime), 'seconds');
+            }
+        }
     };
     const handleOnProgress = (state: OnProgressProps) => {
         setVideoState((prev) => ({
@@ -43,26 +93,64 @@ const VideoPlayer = (props: ReactPlayerProps) => {
             currentTime: Math.floor(state.playedSeconds),
             loadedTime: Math.floor(state.loadedSeconds),
         }));
+
+        const internalPlayer = playerRef.current?.getInternalPlayer('hls');
+
+        if (internalPlayer) {
+            const newLevel = internalPlayer.currentLevel;
+            const initialHeight = internalPlayer.levels[newLevel]?.height;
+            if (initialHeight !== videoState.quality) {
+                setVideoState((prev) => ({
+                    ...prev,
+                    quality: initialHeight,
+                }));
+            }
+        } else {
+            const player = playerRef.current?.getInternalPlayer();
+            if (player) {
+                player.videoHeight !== videoState.quality &&
+                    setVideoState((prev) => ({
+                        ...prev,
+                        quality: player.videoHeight,
+                    }));
+            }
+        }
+        localStorage.setItem(storageKey, `${state.playedSeconds}`);
     };
-    const handleSliderChange = (value:number[]) => {
-        playerRef.current?.seekTo(parseInt(value[1]), 'seconds');
+    const onChangeQualityLevels = (level:{videoHeight:string, name:string,height:string}, index:number) => {
+        const internalPlayer = playerRef.current?.getInternalPlayer('hls');
+        if (internalPlayer) {
+            // currentLevel expects to receive an index of the levels array
+            internalPlayer.currentLevel = index
+            // console.log(target.dataset.id);
+            setVideoState((prev) => ({
+                ...prev,
+                quality: level.videoHeight,
+            }));
+        }
+    };
+
+    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        playerRef.current?.seekTo(parseInt(e.target.value), 'seconds');
         setVideoState((prev) => ({
             ...prev,
-            currentTime: parseInt(value[1]),
+            currentTime: parseInt(e.target.value),
         }));
     };
 
-    const handleSliderVolumeChange = (value) => {
+    const handleSliderVolumeChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         setVideoState((prev) => ({
             ...prev,
-            volume: parseFloat(value[1]),
+            volume: parseFloat(e.target.value),
         }));
     };
 
     const handleVumeMute = () => {
         setVideoState((prev) => ({
             ...prev,
-            volume: prev.volume > 0.1 ? 0: 1,
+            volume: prev.volume > 0.1 ? 0 : 1,
         }));
     };
 
@@ -79,6 +167,15 @@ const VideoPlayer = (props: ReactPlayerProps) => {
             fullscreen: !prev.fullscreen,
         }));
         screenfull.toggle(playerWrapperRef.current!);
+        if (playerWrapperRef.current) {
+            // screenfull.request(playerWrapperRef.current);
+            // Check if screen.orientation.lock is supported before using it
+            window?.screen?.orientation?.lock('landscape')
+            .then(()=>{ })
+            .catch(()=>{})
+            playerWrapperRef.current.focus()
+          }
+  
         // screenfull.request(playerWrapperRef.current);
     };
 
@@ -93,13 +190,15 @@ const VideoPlayer = (props: ReactPlayerProps) => {
         <div
             className="player-wrapper"
             ref={playerWrapperRef}
-            onMouseEnter={handleMouseEnter}
+            // onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onMouseMove={handleMouseMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchStart}
         >
             <ReactPlayer
                 ref={playerRef}
                 {...props}
-                {...videoState}
                 onDuration={handleOnDuration}
                 onReady={handleOnReady}
                 onProgress={handleOnProgress}
@@ -111,11 +210,10 @@ const VideoPlayer = (props: ReactPlayerProps) => {
                 handlePlayPause={handlePlayPause}
                 handlePipChange={handlePipChange}
                 handleFullscreen={handleFullscreen}
-                videoState={videoState}
-                setVideoState={setVideoState}
+                handleChangeQuality={onChangeQualityLevels}
             />
         </div>
     );
 };
 
-export default memo(VideoPlayer);
+export default VideoPlayer;

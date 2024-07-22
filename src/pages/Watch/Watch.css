@@ -1,19 +1,19 @@
-.watch-container{
+.watch-container {
     margin: 100px;
     display: flex;
     gap: 20px;
-
+    position: relative;
 }
-.watch-left{
+.watch-left {
     display: flex;
     flex-direction: column;
     flex: 3;
 }
 
-.watch-right{
+.watch-right {
     flex: 1;
 }
-.watch-video-container{
+.watch-video-container {
     max-width: 1280px;
     max-height: 768px;
     aspect-ratio: 16/9;
@@ -22,16 +22,15 @@
     overflow: hidden;
     position: relative;
 }
-.loading-abs{
+.loading-abs {
     position: absolute;
     left: 50%;
     top: 50%;
     bottom: 50%;
     right: 50%;
-    background-color: aqua;
     z-index: 3;
 }
-.watch-episode-section{
+.watch-episode-section {
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
@@ -42,7 +41,7 @@
     aspect-ratio: 9/15.4;
     overflow: hidden;
 }
-.watch-episode-header{
+.watch-episode-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,7 +52,7 @@
     flex-wrap: wrap;
     gap: 10px;
 }
-.watch-episode-list{
+.watch-episode-list {
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-template-rows: repeat(4, auto);
@@ -61,32 +60,35 @@
     padding: 10px;
     overflow-y: auto;
 }
-.watch-ep-card{
+.watch-ep-card {
     padding: 5px 8px;
     border: 1px solid var(--clr-accent);
     border-radius: 2px;
     text-align: center;
 }
-.ep-active{
+.ep-active {
     background-color: var(--clr-accent);
 }
-.info-right-section{
+.info-right-section {
     display: flex;
     flex-direction: column;
     width: 25%;
 }
-.watch-episode-title{
+.watch-episode-title {
     font-size: 16px;
     font-weight: 600;
-
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
 }
-.info-page-select-container span{
+.info-page-select-container span {
     font-size: 16px;
     font-weight: 600;
     text-transform: capitalize !important;
 }
 
-.ep-page-select{
+.ep-page-select {
     width: 100px;
     height: 40px;
     display: flex;
@@ -99,33 +101,229 @@
     font-weight: 600;
     font-size: 16px;
 }
-.info-episode-title{
+.info-episode-title {
     font-size: 16px;
     font-weight: 600;
-
 }
-.info-page-select-container{
+.info-page-select-container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-
 }
-.info-page-select-container span{
+.info-page-select-container span {
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
 }
+.watch-chat-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.watch-desc-container{
+    padding: 10px 0;
+    display: flex;
+    align-items: flex-end;
+    /* justify-content: space-between; */
+    gap: 10px;
+
+}
+.watch-desc-title, .watch-reactions-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+.watch-desc-img{
+    width: 120px;
+    height: 160px;
+    border-radius: 2px;
+}
+.watch-desc-title{
+    font-size: 19px;
+    font-weight: 600;
+}
+.watch-desc-ep{
+    padding-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+
+}
+.watch-reactions-container{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    cursor: pointer;
+    padding-bottom: 15px;
+}
+.watch-reaction{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.watch-reaction img{
+    width: 25px;
+    height: 25px;
+}
+.comments-heading{
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid var(--clr-secondary);
+
+}
+.chat-headers-container{
+    padding: 5px 10px;
+}
+/*Chat Card CSS*/
+.chat-card-container{
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    /* background-color: antiquewhite;   */
+    
+}
+.chat-card-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.chat-card-img img{
+    width: 100%;
+    height: 100%;
+}
+.chat-card-message{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    /* font-family: var(--font-inter); */
+}
+.chat-card-icons-wrapper{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+}
+.show{
+    display: block;
+}
+.chat-card-name{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+
+}
+.chat-time-ago{
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+.chat-card-icon{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.chat-card-icn{
+    font-size: 20px;
+
+}
+/*Chat Card CSS END*/
+.pc-ep-list{
+    display: block;
+}
+
+.phone-ep-list{
+    display: none;
+    margin: 10px 0;
+}
+.watch-scrollToBtns{
+    position: fixed;
+    right: 2rem;
+    padding: 10px;
+    bottom: 1rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--clr-accent);
+    border-radius: 50%;
+
+}
+.watch-scrollToBtns button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor:pointer;
 
 
-
-@media screen and (max-width:1100px) {
-    .watch-container{
+}
+@media screen and (max-width: 1100px) {
+    .watch-container {
         flex-direction: column;
+        margin: 100px 20px;
     }
-    .watch-left{
+    .watch-left {
         width: 100%;
-        background-color: aliceblue;
     }
+}
 
+@media screen and (max-width: 400px) {
+    .watch-container {
+        flex-direction: column;
+        margin: 80px 0px;
+    }
+    .watch-left {
+        width: 100%;
+    }
+    .watch-right {
+        margin: 0 5px;
+    }
+    .watch-episode-section {
+        aspect-ratio: auto;
+        max-height: 500px;
+    }
+    .watch-video-container {
+        border-radius: 0;
+    }
+    .watch-episode-list {
+        grid-template-columns: repeat(3, auto);
+        grid-template-rows: repeat(3, auto);
+    }
+    .watch-desc-container{
+        align-items: flex-start;
+    }
+    .watch-genres{
+        display: none;
+    }
+    .pc-ep-list{
+        display: none;
+    }
+    .chat-card-container{
+        padding: 0 10px;
+    }
+    .phone-ep-list{
+        display: block;
+    }
+    .watch-scrollToBtns{
+        right: 0;
+        border-radius: 10px;
+        width: 50px;
+        /* height: 50px; */
+        gap: 10px;
+    }
+    .watch-scrollToBtns button:first-child{
+        padding: 5px;
+        border-bottom: 1px solid var(--clr-secondary);
+    }
 }
