@@ -104,7 +104,7 @@ const Navbar = () => {
             {/* //ad's text */}
             <div className="nav-ad-texts">
                 <p className="nav-no-ads-text">
-                    Powered by Gogo / Hi-anime / Anilist
+                    Powered by Anilist and Third party APIs
                 </p>
                 <p style={{ color: 'gray', textAlign: 'right', fontSize: 12 }}>
                     unofficial project
