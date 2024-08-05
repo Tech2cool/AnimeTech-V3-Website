@@ -1,8 +1,7 @@
 import Layout from '../../Layout/Layout';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
-import useDebounce from '../../hooks/useDebounce';
-import { fetchPopular, fetchRandom } from '../../api/v1';
+import { useParams } from 'react-router-dom';
+import { fetchRandom } from '../../api/v1';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
 import './Search.css';
 import Top10List from '../../component/Top10List/Top10List';
@@ -52,7 +51,6 @@ const Popular = () => {
                         pages={data?.pages}
                         currentPage={data?.currentPage}
                         seeAllLocation={`/random/${new Date().getTime()}`}
-                        
                     />
                 </div>
                 <div className="search-list-right">

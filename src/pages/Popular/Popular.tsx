@@ -1,6 +1,6 @@
 import Layout from '../../Layout/Layout';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useDebounce from '../../hooks/useDebounce';
 import { fetchPopular } from '../../api/v1';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
@@ -24,15 +24,8 @@ interface searchQuery {
     hasNextPage: boolean;
     totalPages: number;
 }
-interface paginationProps {
-    page?: number | string;
-    location: string;
-    query?: string;
-}
-
 const Popular = () => {
     const { page } = useParams();
-    const navigate = useNavigate();
 
     const deboucePage = useDebounce(page, 500);
     const {
