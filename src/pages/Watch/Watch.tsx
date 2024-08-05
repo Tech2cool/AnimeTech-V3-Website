@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Layout from '../../Layout/Layout';
 import './Watch.css';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
     fetchChats,
     fetchEpisodes,
@@ -21,6 +21,7 @@ import EpisodesList from './EpisodesList';
 import CommentsList from './CommentsList';
 import WatchDescription from './WatchDescription';
 import Top10List from '../../component/Top10List/Top10List';
+import { Helmet } from 'react-helmet-async';
 
 interface SourceTypes {
     sources: {
@@ -102,12 +103,13 @@ interface dataChatsType {
     };
     response: typeItems[];
 }
+
 const Watch = () => {
     const { id, episodeId } = useParams();
-    const [cursor, setCursor] = useState<string | null>(null);
-    const [commentsList, setCommentsList] = useState<typeItems[]>([]);
+    const dummy2Ref = useRef<HTMLDivElement>(null);
 
     const { videoState, setVideoState } = useVideoState();
+    const [url, setUrl] = useState<string | undefined>(undefined);
     const {
         currentTime,
         buffering,
@@ -148,47 +150,34 @@ const Watch = () => {
         queryKey: ['episodes', id],
         queryFn: () => fetchEpisodes({ id: id }),
     });
+    const fetchChat = async ({ pageParam = undefined }) => {
+        const resp = await fetchChats({
+            id: dataSource?.thread?.id,
+            cursor: pageParam,
+        });
+        return resp;
+    };
 
     const {
         data: dataChats,
-        isLoading: isLoadingChats,
         error: errorChats,
-    } = useQuery<dataChatsType>({
-        queryKey: ['Chats', dataSource?.thread?.id, cursor],
-        queryFn: () => fetchChatsDef(),
+        fetchNextPage,
+        isFetching,
+        isFetchingNextPage,
+        isLoading: isLoadingChats,
+    } = useInfiniteQuery({
+        queryKey: ['chats-infinite', dataSource?.thread?.id],
+        queryFn: fetchChat,
+        initialPageParam: undefined,
+        getNextPageParam: (lastPage) => {
+            if (lastPage?.cursor?.hasNext) {
+                return lastPage?.cursor?.next;
+            }
+            return undefined;
+        },
+        enabled: !!dataSource?.thread?.id,
     });
-    const fetchChatsDef = async () => {
-        try {
-            const response = await fetchChats({
-                id: dataSource?.thread?.id,
-                cursor: cursor,
-            });
-            return response;
-        } catch (error) {
-            return error;
 
-            // console.log(error);
-            // Alert.alert('error', error?.message);
-        }
-    };
-
-    useEffect(() => {
-        if (!dataChats) return;
-        if (!dataChats?.response) return;
-        const oldArr = [...commentsList, ...dataChats.response]
-        // oldArr.push(dataChats.response)
-        if (commentsList?.length > 0) {
-            setCommentsList(oldArr);
-        } else {
-            setCommentsList(dataChats?.response);
-        }
-    }, [dataChats, setCommentsList]);
-
-    const fetchNextPage = () => {
-        if (dataChats?.cursor?.hasNext) {
-            setCursor(dataChats?.cursor?.next);
-        }
-    };
     useEffect(() => {
         if (!dataSource) return;
 
@@ -197,6 +186,7 @@ const Watch = () => {
             dataSource?.sources[0];
 
         if (findFHD) {
+            setUrl(findFHD?.url);
             setVideoState((prev) => ({
                 ...prev,
                 url: findFHD?.url,
@@ -209,6 +199,7 @@ const Watch = () => {
         isLoadingSource,
         setVideoState,
     ]);
+
     const {
         data: dataReaction,
         isLoading: isLoadingReaction,
@@ -217,7 +208,14 @@ const Watch = () => {
         queryKey: ['Reactions', dataSource?.thread?.id],
         queryFn: () => fetchReaction({ id: dataSource?.thread?.id }),
     });
-    const dummy2Ref = useRef<HTMLDivElement>(null);
+
+    const allItems = useMemo(
+        () =>
+            dataChats?.pages?.flatMap((fkItems: dataChatsType) => {
+                return fkItems?.response ?? [];
+            }),
+        [dataChats],
+    );
 
     const scrolltoTop = () => {
         dummy2Ref.current?.scrollIntoView({ behavior: 'smooth' });
@@ -241,6 +239,12 @@ const Watch = () => {
 
     return (
         <Layout>
+            <Helmet>
+                <title>Watching Anime</title>
+                <meta name="description" content="Watching/streaming anime." />
+                <link rel="canonical" href="/watch" />
+            </Helmet>
+
             <div className="watch-container" ref={dummy2Ref}>
                 <div className="watch-left">
                     <div className="watch-video-container">
@@ -252,7 +256,7 @@ const Watch = () => {
                                 }}
                             />
                         )}
-                        <VideoPlayer {...newVideoState} />
+                        <VideoPlayer {...newVideoState} url={url} />
                         {isLoadingSource && (
                             <div className="loading-abs">
                                 <Loading
@@ -282,14 +286,14 @@ const Watch = () => {
                                 id={id}
                             />
                         </div>
-
                         <CommentsList
-                            data={dataChats!}
-                            list={commentsList}
+                            list={allItems!}
                             thread={dataSource?.thread}
                             fetchNextChats={fetchNextPage}
                             scrolltoTop={scrolltoTop}
                             isLoading={isLoadingChats}
+                            isFetching={isFetching}
+                            isFetchingNextPage={isFetchingNextPage}
                         />
                     </div>
                 </div>

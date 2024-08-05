@@ -13,6 +13,7 @@ import Popular from './pages/Popular/Popular';
 import NotFound from './component/NotFound/NotFound';
 import Season from './pages/Season/Season';
 import Upcoming from './pages/Upcoming/Upcoming';
+import Random from './pages/Random/Random';
 
 const App = () => {
     return (
@@ -115,6 +116,18 @@ const App = () => {
                             }
                         >
                             <Upcoming />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/random/:id?"
+                    element={
+                        <Suspense
+                            fallback={
+                                <Loading LoadingType="HashLoader" color="red" />
+                            }
+                        >
+                            <Random />
                         </Suspense>
                     }
                 />

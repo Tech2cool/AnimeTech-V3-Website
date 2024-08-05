@@ -4,6 +4,7 @@ import App from './App.tsx';
 import { VideoStateProvider } from './context/VideoStateContext.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SettingContextProvider } from './context/SettingContext.tsx';
+import {HelmetProvider } from 'react-helmet-async';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <VideoStateProvider>
                 <SettingContextProvider>
-                    <App />
+                    <HelmetProvider>
+                        <App />
+                    </HelmetProvider>
                 </SettingContextProvider>
             </VideoStateProvider>
         </QueryClientProvider>

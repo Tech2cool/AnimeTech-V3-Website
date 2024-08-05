@@ -17,9 +17,14 @@ import GenreList from '../../component/GenreList/GenreList';
 import Top10List from '../../component/Top10List/Top10List';
 import { lazy, Suspense } from 'react';
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
+import { Helmet } from 'react-helmet-async';
 
-const VerticalSlider = lazy(() => import('../../component/VerticalSlider/VerticalSlider'));
-const HorizontalSlider = lazy(() => import('../../component/HorizontalSlider/HorizontalSlider'));
+const VerticalSlider = lazy(
+    () => import('../../component/VerticalSlider/VerticalSlider'),
+);
+const HorizontalSlider = lazy(
+    () => import('../../component/HorizontalSlider/HorizontalSlider'),
+);
 const WideSlider = lazy(() => import('./WideSlider'));
 
 interface HonmeQuery {
@@ -112,72 +117,82 @@ const Home = () => {
 
     return (
         <Layout>
+            <Helmet>
+                <title>AnimeTech Home</title>
+                <meta
+                    name="description"
+                    content="AnimeTech Homepage."
+                />
+                <link rel="canonical" href="/" />
+            </Helmet>
             <BigSlider />
             <Suspense fallback={<SkeletonComp />}>
-            <div className="home-container">
-                <VerticalSlider
-                    title="Recent Releases"
-                    list={data?.list}
-                    seeAllLocation="/recent-release?page=1"
-                    isVideo={true}
-                    isLoading={isLoading}
-                />
-                <WideSlider list={home?.banners} isLoading={isLoadingHome} />
-                <div className="home-flex-hr">
-                    <HorizontalSlider
-                        title="Top Airing"
-                        list={topAiring?.list?.slice(0, 6)}
-                        seeAllLocation="/top-airing?page=1"
-                        isLoading={isLoadingTopAiring}
+                <div className="home-container">
+                    <VerticalSlider
+                        title="Recent Releases"
+                        list={data?.list}
+                        seeAllLocation="/recent-release?page=1"
+                        isVideo={true}
+                        isLoading={isLoading}
                     />
-                    <HorizontalSlider
-                        title="Popular Anime"
-                        list={popular?.list?.slice(0, 6)}
-                        seeAllLocation="/popular?page=1"
-                        isLoading={isLoadingPopular}
-                    />
-                    <HorizontalSlider
-                        title="Upcoming Anime"
-                        list={home?.upcoming?.slice(0, 6)}
-                        seeAllLocation="/upcoming-anime?page=1"
+                    <WideSlider
+                        list={home?.banners}
                         isLoading={isLoadingHome}
                     />
-                    <HorizontalSlider
-                        title="Requsted Anime"
-                        list={home?.requested_list?.slice(0, 6)}
-                        seeAllLocation="/requested-list?page=1"
-                        isLoading={isLoadingHome}
-                    />
-                </div>
-                <div className="home-left-right-section">
-                    <div className="home-left-sec">
-                        <ListViewItems
-                            list={home?.season_releases?.list}
+                    <div className="home-flex-hr">
+                        <HorizontalSlider
+                            title="Top Airing"
+                            list={topAiring?.list?.slice(0, 6)}
+                            seeAllLocation="/top-airing?page=1"
+                            isLoading={isLoadingTopAiring}
+                        />
+                        <HorizontalSlider
+                            title="Popular Anime"
+                            list={popular?.list?.slice(0, 6)}
+                            seeAllLocation="/popular?page=1"
+                            isLoading={isLoadingPopular}
+                        />
+                        <HorizontalSlider
+                            title="Upcoming Anime"
+                            list={home?.upcoming?.slice(0, 6)}
+                            seeAllLocation="/upcoming-anime?page=1"
                             isLoading={isLoadingHome}
-                            title={home?.season_releases?.title}
-                            seeAllLocation="/season"
                         />
-                        <ListViewItems
-                            list={movies?.list?.slice(0, 18)}
-                            isLoading={isLoadingMovies}
-                            title={'Anime Movies'}
-                            seeAllLocation="/movies"
-                        />
-                        <ListViewItems
-                            list={random?.list?.slice(0, 18)}
-                            isLoading={isLoadingRandom}
-                            title={'Random Animes'}
-                            seeAllLocation={`/random/${randomTime}`}
+                        <HorizontalSlider
+                            title="Requsted Anime"
+                            list={home?.requested_list?.slice(0, 6)}
+                            seeAllLocation="/requested-list?page=1"
+                            isLoading={isLoadingHome}
                         />
                     </div>
-                    <div className="home-right-sec">
-                        <GenreList />
-                        <Top10List />
+                    <div className="home-left-right-section">
+                        <div className="home-left-sec">
+                            <ListViewItems
+                                list={home?.season_releases?.list}
+                                isLoading={isLoadingHome}
+                                title={home?.season_releases?.title}
+                                seeAllLocation="/season"
+                            />
+                            <ListViewItems
+                                list={movies?.list?.slice(0, 18)}
+                                isLoading={isLoadingMovies}
+                                title={'Anime Movies'}
+                                seeAllLocation="/movies"
+                            />
+                            <ListViewItems
+                                list={random?.list?.slice(0, 18)}
+                                isLoading={isLoadingRandom}
+                                title={'Random Animes'}
+                                seeAllLocation={`/random/${randomTime}`}
+                            />
+                        </div>
+                        <div className="home-right-sec">
+                            <GenreList />
+                            <Top10List />
+                        </div>
                     </div>
                 </div>
-            </div>
             </Suspense>
-
         </Layout>
     );
 };

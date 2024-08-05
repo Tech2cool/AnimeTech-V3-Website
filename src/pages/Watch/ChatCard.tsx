@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { stripHtmlTags } from '../../utils/HelperFunctions';
 import moment from 'moment';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
@@ -48,10 +48,15 @@ const ChatCard = memo(({ item }: typeItems) => {
         }
     }, [item?.message]);
 
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         setShowFullComment(!showFullComment);
-    };
+    }, [showFullComment]);
 
+    const memoziedTime = useMemo(() => {
+        if (item?.createdAt) {
+            return moment(item.createdAt).fromNow();
+        }
+    }, [item?.createdAt]);
     return (
         <div className="chat-card-container">
             <div className="chat-card-left">
@@ -63,9 +68,7 @@ const ChatCard = memo(({ item }: typeItems) => {
                 <div className="chat-card-name">
                     <span>{item.author.name}</span>
                     <span>{`\u2022`}</span>
-                    <span className="chat-time-ago">
-                        {moment(item.createdAt).fromNow()}
-                    </span>
+                    <span className="chat-time-ago">{memoziedTime}</span>
                 </div>
                 <div
                     className={`chat-card-message ${

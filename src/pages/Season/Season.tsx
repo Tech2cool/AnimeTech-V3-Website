@@ -10,6 +10,7 @@ import GenreList from '../../component/GenreList/GenreList';
 import { toast } from 'react-toastify';
 import { Item } from '../../utils/contstant';
 import RandomColorText from '../../component/GenreList/RandomColorText';
+import { Helmet } from 'react-helmet-async';
 
 interface searchQuery {
     list: Item[];
@@ -46,7 +47,7 @@ const Season = () => {
         queryKey: ['Season', deboucePage, season],
         queryFn: () => fetchSeasonalAnime({ season: season, page: page }),
     });
-    const handleClickBtn = (item:tagsType) => {
+    const handleClickBtn = (item: tagsType) => {
         navigate(`/${pathname.split('/')[1]}/${item?.id}/${page}`);
     };
 
@@ -55,10 +56,16 @@ const Season = () => {
     }
     return (
         <Layout>
+            <Helmet>
+                <title>Seasonal Animes Winter/Summer/Fall/Spring</title>
+                <meta name="description" content="Seasonal Animes Winter/Summer/Fall/Spring." />
+                <link rel="canonical" href="/season" />
+            </Helmet>
+
             <div className="search-list-container">
                 <div className="search-list-left">
                     <div className="tags-flex" style={{ display: 'flex' }}>
-                        {dataSearch?.tags?.map((item:tagsType) => (
+                        {dataSearch?.tags?.map((item: tagsType) => (
                             <div
                                 onClick={() => handleClickBtn(item)}
                                 key={item?.id}

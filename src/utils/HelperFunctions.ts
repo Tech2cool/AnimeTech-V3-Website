@@ -117,3 +117,20 @@ export function replaceLastPathSegment(
     return segments.join('/');
 }
 
+interface paginationProps{
+    page?:number | string; 
+    location:string;
+    query?:string;
+}
+export const onPaginationUrl = ({page, location, query}:paginationProps)=>{
+    let url = `/${location}`
+
+    if(query){
+        url += `/${query}`
+    }
+    if(page){
+        url += `/${page}`
+    }
+    
+    return url
+}

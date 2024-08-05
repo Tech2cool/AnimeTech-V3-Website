@@ -43,10 +43,10 @@ const Footer = () => {
             </div>
             <p></p>
             <ul className="ul-terms">
-                <Link to={`/terms`}>
+                <Link to={`https://github.com/Tech2cool`}>
                     <li>Contact</li>
                 </Link>
-                <Link to={`/app-download`}>
+                <Link to={`https://github.com/Tech2cool`}>
                     <li>AnimeTech App</li>
                 </Link>
             </ul>

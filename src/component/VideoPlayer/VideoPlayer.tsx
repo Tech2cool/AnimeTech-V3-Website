@@ -59,7 +59,6 @@ const VideoPlayer = (props: ReactPlayerProps) => {
         const internalPlayer = playerRef.current?.getInternalPlayer('hls');
 
         if (internalPlayer) {
-
             setVideoState((prev) => ({
                 ...prev,
                 levels: internalPlayer.levels,
@@ -113,11 +112,14 @@ const VideoPlayer = (props: ReactPlayerProps) => {
         }
         localStorage.setItem(storageKey, `${state.playedSeconds}`);
     };
-    const onChangeQualityLevels = (level:{videoHeight:string, name:string,height:string}, index:number) => {
+    const onChangeQualityLevels = (
+        level: { videoHeight: string; name: string; height: string },
+        index: number,
+    ) => {
         const internalPlayer = playerRef.current?.getInternalPlayer('hls');
         if (internalPlayer) {
             // currentLevel expects to receive an index of the levels array
-            internalPlayer.currentLevel = index
+            internalPlayer.currentLevel = index;
             // console.log(target.dataset.id);
             setVideoState((prev) => ({
                 ...prev,
@@ -166,12 +168,13 @@ const VideoPlayer = (props: ReactPlayerProps) => {
         if (playerWrapperRef.current) {
             // screenfull.request(playerWrapperRef.current);
             // Check if screen.orientation.lock is supported before using it
-            window?.screen?.orientation?.lock('landscape')
-            .then(()=>{ })
-            .catch(()=>{})
-            playerWrapperRef.current.focus()
-          }
-  
+            window?.screen?.orientation
+                ?.lock('landscape')
+                .then(() => {})
+                .catch(() => {});
+            playerWrapperRef.current.focus();
+        }
+
         // screenfull.request(playerWrapperRef.current);
     };
 
@@ -195,6 +198,7 @@ const VideoPlayer = (props: ReactPlayerProps) => {
             <ReactPlayer
                 ref={playerRef}
                 {...props}
+                url={props.url}
                 onDuration={handleOnDuration}
                 onReady={handleOnReady}
                 onProgress={handleOnProgress}

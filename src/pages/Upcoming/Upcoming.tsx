@@ -10,6 +10,7 @@ import GenreList from '../../component/GenreList/GenreList';
 import { toast } from 'react-toastify';
 import { Item } from '../../utils/contstant';
 import RandomColorText from '../../component/GenreList/RandomColorText';
+import { Helmet } from 'react-helmet-async';
 
 interface searchQuery {
     list: Item[];
@@ -40,13 +41,13 @@ interface tagsType {
 const Upcoming = () => {
     const { type, page = 1 } = useParams();
 
-    const { pathname} = useLocation();
+    const { pathname } = useLocation();
     const navigate = useNavigate();
     const deboucePage = useDebounce(page, 500);
     const {
         data: dataSearch,
         error: errorSearch,
-        isLoading: isLoadingSearch,
+        isLoading: isLoadingUpcoming,
     } = useQuery<searchQuery, Error>({
         queryKey: ['Upcoming', deboucePage, type],
         queryFn: () => fetchUpcoming({ type: type, page: page }),
@@ -60,6 +61,15 @@ const Upcoming = () => {
     }
     return (
         <Layout>
+            <Helmet>
+                <title>Upcoming Animes</title>
+                <meta
+                    name="description"
+                    content="All Types of Upcoming Animes."
+                />
+                <link rel="canonical" href="/upcoming-anime" />
+            </Helmet>
+
             <div className="search-list-container">
                 <div className="search-list-left">
                     <div className="tags-flex" style={{ display: 'flex' }}>
@@ -73,53 +83,54 @@ const Upcoming = () => {
                         ))}
                     </div>
 
-                    {dataSearch?.tv_series && dataSearch?.tv_series?.length >0 && (
-                        <ListViewItems
-                            title={`TV Series`}
-                            list={dataSearch?.tv_series}
-                            pagination={true}
-                            isLoading={isLoadingSearch}
-                            pages={dataSearch?.pages}
-                            currentPage={dataSearch?.currentPage}
-                        />
-                    )}
+                    {dataSearch?.tv_series &&
+                        dataSearch?.tv_series?.length > 0 && (
+                            <ListViewItems
+                                title={`TV Series`}
+                                list={dataSearch?.tv_series}
+                                pagination={true}
+                                isLoading={isLoadingUpcoming}
+                                pages={dataSearch?.pages}
+                                currentPage={dataSearch?.currentPage}
+                            />
+                        )}
 
-                    {dataSearch?.movies && dataSearch?.movies?.length >0 && (
+                    {dataSearch?.movies && dataSearch?.movies?.length > 0 && (
                         <ListViewItems
                             title={`Movies`}
                             list={dataSearch?.movies}
                             pagination={true}
-                            isLoading={isLoadingSearch}
+                            isLoading={isLoadingUpcoming}
                             pages={dataSearch?.pages}
                             currentPage={dataSearch?.currentPage}
                         />
                     )}
-                    {dataSearch?.ona && dataSearch?.ona?.length >0 && (
+                    {dataSearch?.ona && dataSearch?.ona?.length > 0 && (
                         <ListViewItems
                             title={`Ona`}
                             list={dataSearch?.ona}
                             pagination={true}
-                            isLoading={isLoadingSearch}
+                            isLoading={isLoadingUpcoming}
                             pages={dataSearch?.pages}
                             currentPage={dataSearch?.currentPage}
                         />
                     )}
 
-                    {dataSearch?.ova && dataSearch?.ova?.length >0 && (
+                    {dataSearch?.ova && dataSearch?.ova?.length > 0 && (
                         <ListViewItems
                             title={`Ova`}
                             list={dataSearch?.ova}
                             pagination={true}
-                            isLoading={isLoadingSearch}
+                            isLoading={isLoadingUpcoming}
                             pages={dataSearch?.pages}
                             currentPage={dataSearch?.currentPage}
                         />
                     )}
-                    {dataSearch?.special && dataSearch?.special?.length >0 && (
+                    {dataSearch?.special && dataSearch?.special?.length > 0 && (
                         <ListViewItems
                             title={`Special`}
                             list={dataSearch?.special}
-                            isLoading={isLoadingSearch}
+                            isLoading={isLoadingUpcoming}
                             pages={dataSearch?.pages}
                             pagination={true}
                             currentPage={dataSearch?.currentPage}

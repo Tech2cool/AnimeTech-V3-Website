@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import GenreList from '../../component/GenreList/GenreList';
 import Top10List from '../../component/Top10List/Top10List';
 import SkeletonComp from '../../component/SkeletonComp/SkeletonComp';
+import { Helmet } from 'react-helmet-async';
 
 interface PagesType {
     index: number;
@@ -154,6 +155,12 @@ const Info = () => {
     };
     return (
         <Layout>
+            <Helmet>
+                <title>Details of Anime {memoizedTitle|| ""}</title>
+                <meta name="description" content="Detailed Info About Anime" />
+                <link rel="canonical" href="/info" />
+            </Helmet>
+
             <div className="info-container">
                 <div className="info-top-section">
                     {isLoading ? (
@@ -399,7 +406,11 @@ const Info = () => {
                 <div className="info-left-right-section">
                     {isLoadingEpisode ? (
                         <SkeletonComp
-                            style={{ width: '70vw', height: '500px', margin:"10px 20px" }}
+                            style={{
+                                width: '70vw',
+                                height: '500px',
+                                margin: '10px 20px',
+                            }}
                         />
                     ) : (
                         <div className="info-episode-section">

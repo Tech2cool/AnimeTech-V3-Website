@@ -2,7 +2,7 @@ import Layout from '../../Layout/Layout';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import useDebounce from '../../hooks/useDebounce';
-import { fetchPopular } from '../../api/v1';
+import { fetchPopular, fetchRandom } from '../../api/v1';
 import ListViewItems from '../../component/ListViewItems/ListViewItems';
 import './Search.css';
 import Top10List from '../../component/Top10List/Top10List';
@@ -24,46 +24,35 @@ interface searchQuery {
     hasNextPage: boolean;
     totalPages: number;
 }
-interface paginationProps {
-    page?: number | string;
-    location: string;
-    query?: string;
-}
-
+const date = new Date();
 const Popular = () => {
-    const { page } = useParams();
-    const navigate = useNavigate();
-
-    const deboucePage = useDebounce(page, 500);
-    const {
-        data: dataSearch,
-        error: errorSearch,
-        isLoading: isLoadingSearch,
-    } = useQuery<searchQuery, Error>({
-        queryKey: ['popular', deboucePage],
-        queryFn: () => fetchPopular({ page: page }),
+    const { id = `${date.getTime()}` } = useParams();
+    const { data, error, isLoading } = useQuery<searchQuery, Error>({
+        queryKey: ['Random', id],
+        queryFn: () => fetchRandom({ id: id }),
     });
 
-    if (errorSearch) {
-        toast(errorSearch?.message);
+    if (error) {
+        toast(error?.message);
     }
     return (
         <Layout>
             <Helmet>
-                <title>Popular Animes</title>
-                <meta name="description" content="Popular animes." />
-                <link rel="canonical" href="/popular" />
+                <title>Random Animes</title>
+                <meta name="description" content="Random animes." />
+                <link rel="canonical" href="/random" />
             </Helmet>
 
             <div className="search-list-container">
                 <div className="search-list-left">
                     <ListViewItems
-                        title={`Popular`}
-                        list={dataSearch?.list}
-                        pagination={true}
-                        isLoading={isLoadingSearch}
-                        pages={dataSearch?.pages}
-                        currentPage={dataSearch?.currentPage}
+                        title={`Random Animes`}
+                        list={data?.list}
+                        isLoading={isLoading}
+                        pages={data?.pages}
+                        currentPage={data?.currentPage}
+                        seeAllLocation={`/random/${new Date().getTime()}`}
+                        
                     />
                 </div>
                 <div className="search-list-right">

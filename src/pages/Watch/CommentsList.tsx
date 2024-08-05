@@ -10,12 +10,6 @@ interface threadProps {
     slug: string;
 }
 
-interface cursorProps {
-    cursor: {
-        hasNext: boolean;
-    };
-}
-
 type autherT = {
     avatar: {
         xlarge: {
@@ -41,63 +35,70 @@ interface typeItems {
 }
 
 interface commentListTpe {
-    data: cursorProps;
     list: typeItems[];
     thread: threadProps | undefined;
     fetchNextChats: () => void;
     scrolltoTop: () => void;
     isLoading: boolean;
+    isFetchingNextPage: boolean;
+    isFetching: boolean;
 }
 
-const CommentsList = memo(({
-    data,
-    list,
-    thread,
-    fetchNextChats,
-    scrolltoTop,
-}: commentListTpe) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { ref, inView } = useInView();
+const CommentsList = memo(
+    ({
+        list,
+        thread,
+        fetchNextChats,
+        scrolltoTop,
+        isFetchingNextPage,
+        isFetching,
+        isLoading,
+    }: commentListTpe) => {
+        const containerRef = useRef<HTMLDivElement>(null);
+        const { ref, inView } = useInView();
 
-    useEffect(() => {
-        if (inView) {
-            fetchNextChats();
-        }
-    }, [inView, fetchNextChats]);
+        useEffect(() => {
+            if (inView) {
+                fetchNextChats();
+            }
+        }, [inView, fetchNextChats]);
 
-    const scrolltoBottom = () => {
-        containerRef.current?.scrollIntoView({behavior:'smooth'});
-    };
+        const scrolltoBottom = () => {
+            containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+        };
 
-    return (
-        <div className="watch-chat-container">
-            <div className="watch-scrollToBtns">
-                <button onClick={scrolltoTop}>TOP</button>
-                <button onClick={scrolltoBottom}>END</button>
-            </div>
-
-            <div className="chat-headers-container">
-                <div className="comments-heading">
-                    <span>{thread?.posts}</span>
-                    <span>Comment</span>
+        return (
+            <div className="watch-chat-container">
+                <div className="watch-scrollToBtns">
+                    <button onClick={scrolltoTop}>TOP</button>
+                    <button onClick={scrolltoBottom}>END</button>
                 </div>
+
+                <div className="chat-headers-container">
+                    <div className="comments-heading">
+                        <span>{thread?.posts}</span>
+                        <span>Comment</span>
+                    </div>
+                </div>
+                <div className="comments-list">
+                    {list?.map((item, index) => (
+                        <ChatCard item={item} key={index} />
+                    ))}
+                </div>
+                <div className="end-page" ref={ref}>
+                    {isFetchingNextPage ||
+                        isFetching ||
+                        (isLoading && (
+                            <Loading
+                                LoadingType="HashLoader"
+                                color="var(--clr-accent)"
+                            />
+                        ))}
+                </div>
+                <div className="dummyDiv" ref={containerRef} />
             </div>
-            <div className="comments-list">
-                {list?.map((item, index) => (
-                    <ChatCard item={item} key={index} />
-                ))}
-            </div>
-            <div className="end-page" ref={ref}>
-                {data?.cursor?.hasNext && (
-                    <Loading
-                        LoadingType="HashLoader"
-                        color="var(--clr-accent)"
-                    />
-                )}
-            </div>
-            <div className="dummyDiv" ref={containerRef}> </div>
-        </div>
-    );
-});
+        );
+    },
+);
 
 export default CommentsList;
