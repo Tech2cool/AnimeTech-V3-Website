@@ -59,7 +59,7 @@ const Season = () => {
             <Helmet>
                 <title>Seasonal Animes Winter/Summer/Fall/Spring</title>
                 <meta name="description" content="Seasonal Animes Winter/Summer/Fall/Spring." />
-                <link rel="canonical" href="/season" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

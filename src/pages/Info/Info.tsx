@@ -158,7 +158,7 @@ const Info = () => {
             <Helmet>
                 <title>Details of Anime {memoizedTitle|| ""}</title>
                 <meta name="description" content="Detailed Info About Anime" />
-                <link rel="canonical" href="/info" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="info-container">

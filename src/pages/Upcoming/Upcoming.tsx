@@ -67,7 +67,7 @@ const Upcoming = () => {
                     name="description"
                     content="All Types of Upcoming Animes."
                 />
-                <link rel="canonical" href="/upcoming-anime" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

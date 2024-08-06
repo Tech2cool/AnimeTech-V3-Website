@@ -45,7 +45,7 @@ const TopAiring = () => {
             <Helmet>
                 <title>Top Airing Animes</title>
                 <meta name="description" content="Top Airing animes." />
-                <link rel="canonical" href="/top-airing" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

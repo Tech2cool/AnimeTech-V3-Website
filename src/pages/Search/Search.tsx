@@ -55,7 +55,7 @@ const Search = () => {
             <Helmet>
                 <title>Search anime {query}</title>
                 <meta name="description" content="Searching anime." />
-                <link rel="canonical" href="/search" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

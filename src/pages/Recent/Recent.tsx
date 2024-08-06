@@ -45,7 +45,7 @@ const Recent = () => {
             <Helmet>
                 <title>Recent Release Animes</title>
                 <meta name="description" content="Recent release animes." />
-                <link rel="canonical" href="/recent-release" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

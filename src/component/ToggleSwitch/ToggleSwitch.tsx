@@ -24,7 +24,7 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({
       style={{
         display: "flex",
         gap: 2,
-        backgroundColor: "gray",
+        backgroundColor: "#525252",
         borderRadius: 4,
         overflow: "hidden",
         ...containerStyle,
@@ -34,7 +34,7 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({
         <div
           key={item}
           style={{
-            backgroundColor: active === item ? "var(--clr-accent)" : "gray",
+            backgroundColor: active === item ? "var(--clr-accent)" : "#525252",
             // padding: 4,
             paddingTop:2,
             paddingBottom:2,

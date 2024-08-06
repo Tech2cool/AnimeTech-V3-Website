@@ -242,7 +242,7 @@ const Watch = () => {
             <Helmet>
                 <title>Watching Anime</title>
                 <meta name="description" content="Watching/streaming anime." />
-                <link rel="canonical" href="/watch" />
+                <link rel="canonical" href={window.location.pathname} />
             </Helmet>
 
             <div className="watch-container" ref={dummy2Ref}>

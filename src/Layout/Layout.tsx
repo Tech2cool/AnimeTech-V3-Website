@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <>
             <Navbar />
             <Drawer />
-            <div className="layout-container">
+            <main className="layout-container">
                 {children}
                 <ToastContainer
                     position="bottom-right"
@@ -30,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     transition={Bounce}
                 />
                 <Footer />
-            </div>
+            </main>
             
         </>
     );

@@ -45,7 +45,7 @@ const Popular = () => {
             <Helmet>
                 <title>Popular Animes</title>
                 <meta name="description" content="Popular animes." />
-                <link rel="canonical" href="/popular" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
 
             <div className="search-list-container">

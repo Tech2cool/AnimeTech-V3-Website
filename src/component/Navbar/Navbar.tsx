@@ -22,72 +22,86 @@ const Navbar = () => {
         });
     };
 
-
     return (
-        <div className={`nav-container`}>
-            <div className="nav-icon" onClick={closeSidebar}>
-                <BiMenu size={30} />
-            </div>
-            <Link to={'/'} className="nav-logo">
-                <p>Anime</p>
-                <p>Tech</p>
-            </Link >
+        <nav className={`nav-container`}>
+            <ul className="nav_contact_container">
+                <li className="nav-icon" onClick={closeSidebar}>
+                    <BiMenu size={30} />
+                </li>
+                <li>
+                    <Link to={'/'} className="nav-logo">
+                        <p>Anime</p>
+                        <p>Tech</p>
+                    </Link>
+                </li>
+            </ul>
+
             <Searchbar />
 
-            <div className="nav_contact_container">
-                <div className="nav_contact-text_contaniner">
+            <ul className="nav_contact_container">
+                <li className="nav_contact-text_contaniner">
                     <p>JOIN</p>
                     <p>NOW</p>
-                </div>
-                <a
-                    href="https://github.com/Tech2cool"
-                    target="_blank"
-                    style={{ backgroundColor: 'rgb(61 141 235)' }}
-                    className="nav_circle_icon_contaniner"
-                >
-                    <FaGithub cursor={'pointer'} size={25} />
-                </a>
-                <a
-                    href="https://discord.gg/9FvzsfhUrj"
-                    target="_blank"
-                    style={{ backgroundColor: '#7289da' }}
-                    className="nav_circle_icon_contaniner"
-                >
-                    <FaDiscord cursor={'pointer'} size={25} />
-                </a>
-                <a
-                    href="https://x.com/"
-                    target="_blank"
-                    style={{ backgroundColor: 'rgb(61 141 235)' }}
-                    className="nav_circle_icon_contaniner"
-                >
-                    <FaTwitter cursor={'pointer'} size={25} />
-                </a>
-            </div>
+                </li>
+                <li>
+                    <a
+                        href="https://github.com/Tech2cool"
+                        target="_blank"
+                        style={{ backgroundColor: 'rgb(61 141 235)' }}
+                        className="nav_circle_icon_contaniner"
+                    >
+                        <FaGithub cursor={'pointer'} size={25} />
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="https://discord.gg/9FvzsfhUrj"
+                        target="_blank"
+                        style={{ backgroundColor: '#7289da' }}
+                        className="nav_circle_icon_contaniner"
+                    >
+                        <FaDiscord cursor={'pointer'} size={25} />
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="https://x.com/"
+                        target="_blank"
+                        style={{ backgroundColor: 'rgb(61 141 235)' }}
+                        className="nav_circle_icon_contaniner"
+                    >
+                        <FaTwitter cursor={'pointer'} size={25} />
+                    </a>
+                </li>
+            </ul>
 
-            <div className="nav-btns-container">
+            <ul className="nav-btns-container">
                 {/* //Random Anime Btn */}
-                <Link to={`/random`} className="nav-random">
-                    <FaRandom
-                        cursor={'pointer'}
-                        size={25}
-                        color="var(--clr-accent)"
-                    />
-                    <p>Random</p>
-                </Link>
+                <li>
+                    <Link to={`/random`} className="nav-random">
+                        <FaRandom
+                            cursor={'pointer'}
+                            size={25}
+                            color="var(--clr-accent)"
+                        />
+                        <p>Random</p>
+                    </Link>
+                </li>
 
                 {/* //MyList btn */}
-                <Link to={`/my-list`} className="nav-random">
-                    <PiListHeartBold
-                        cursor={'pointer'}
-                        size={28}
-                        color="var(--clr-accent)"
-                    />
-                    <p>My List</p>
-                </Link>
+                <li>
+                    <Link to={`/my-list`} className="nav-random">
+                        <PiListHeartBold
+                            cursor={'pointer'}
+                            size={28}
+                            color="var(--clr-accent)"
+                        />
+                        <p>My List</p>
+                    </Link>
+                </li>
 
                 {/* //Language btn */}
-                <div className="nav-language">
+                <li className="nav-language">
                     <ToggleSwitch
                         list={['en', 'jp']}
                         active={setting.language}
@@ -98,8 +112,9 @@ const Navbar = () => {
                         }}
                     />
                     <p>Anime Name</p>
-                </div>
-            </div>
+                </li>
+            </ul>
+
             <div className="devider"></div>
             {/* //ad's text */}
             <div className="nav-ad-texts">
@@ -110,7 +125,7 @@ const Navbar = () => {
                     unofficial project
                 </p>
             </div>
-        </div>
+        </nav>
     );
 };
 

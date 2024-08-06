@@ -123,7 +123,7 @@ const Home = () => {
                     name="description"
                     content="AnimeTech Homepage."
                 />
-                <link rel="canonical" href="/" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
             <BigSlider />
             <Suspense fallback={<SkeletonComp />}>
